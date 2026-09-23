@@ -68,40 +68,77 @@ export default function TruckBrandFilter() {
           </p>
         </div>
 
-        <div className="brands-grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
+        <div className="brands-grid">
           {BRANDS.map((brand) => (
-            <Link key={brand.name} href={brand.href} style={{ textDecoration: 'none' }}>
+            <Link
+              key={brand.name}
+              href={brand.href}
+              style={{ textDecoration: 'none', display: 'block', minWidth: 0, width: '100%' }}
+            >
               <div
                 className="brand-card"
                 role="button"
                 id={`brand-${brand.name.toLowerCase()}`}
-                style={{ padding: '32px 24px' }}
               >
                 {/* Icon */}
                 <div style={{
-                  width: '64px', height: '64px',
-                  borderRadius: '16px',
+                  width: '56px', height: '56px',
+                  borderRadius: '14px',
                   background: `${brand.color}18`,
                   border: `1px solid ${brand.color}30`,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  margin: '0 auto 20px',
-                  fontSize: '28px',
+                  margin: '0 auto 16px',
+                  fontSize: '26px',
                   transition: 'transform var(--transition-normal)',
                 }}>
                   {brand.emoji}
                 </div>
 
-                <h3 style={{ fontFamily: 'Barlow Condensed, sans-serif', fontSize: '24px', fontWeight: '800', textTransform: 'uppercase', color: 'var(--text-primary)', marginBottom: '6px', letterSpacing: '0.02em' }}>
+                <h3 style={{
+                  fontFamily: 'Barlow Condensed, sans-serif',
+                  fontSize: 'clamp(18px, 4.5vw, 24px)',
+                  fontWeight: '800',
+                  textTransform: 'uppercase',
+                  color: 'var(--text-primary)',
+                  marginBottom: '6px',
+                  letterSpacing: '0.02em',
+                  overflowWrap: 'break-word',
+                  wordBreak: 'break-word',
+                  lineHeight: 1.1,
+                }}>
                   {brand.name}
                 </h3>
-                <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '12px' }}>
+                <p style={{
+                  fontSize: '12px',
+                  color: 'var(--text-secondary)',
+                  marginBottom: '10px',
+                  overflowWrap: 'break-word',
+                  wordBreak: 'break-word',
+                  lineHeight: 1.4,
+                }}>
                   {brand.description}
                 </p>
-                <div style={{ fontSize: '11px', color: 'var(--text-muted)', letterSpacing: '0.06em' }}>
+                <div style={{
+                  fontSize: '11px',
+                  color: 'var(--text-muted)',
+                  letterSpacing: '0.04em',
+                  overflowWrap: 'break-word',
+                  wordBreak: 'break-word',
+                  lineHeight: 1.4,
+                }}>
                   {brand.models}
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', marginTop: '20px', fontSize: '13px', fontWeight: '600', color: 'var(--blue-accent)' }}>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '6px',
+                  marginTop: '16px',
+                  fontSize: '13px',
+                  fontWeight: '600',
+                  color: 'var(--blue-accent)',
+                }}>
                   View Guards <ArrowRight size={14} />
                 </div>
               </div>

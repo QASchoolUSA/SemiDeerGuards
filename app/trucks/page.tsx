@@ -32,12 +32,12 @@ export default function TrucksIndexPage() {
       </div>
 
       <div className="container-full" style={{ paddingTop: '56px', paddingBottom: '80px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '20px' }}>
           {BRANDS.map((brand) => (
-            <Link key={brand.name} href={brand.href} style={{ textDecoration: 'none' }}>
+            <Link key={brand.name} href={brand.href} style={{ textDecoration: 'none', display: 'block', minWidth: 0 }}>
               <div
                 className="brand-card"
-                style={{ padding: '36px 28px', display: 'flex', alignItems: 'center', gap: '20px', textAlign: 'left' }}
+                style={{ padding: '28px 20px', display: 'flex', alignItems: 'center', gap: '16px', textAlign: 'left' }}
               >
                 <div style={{
                   width: '64px', height: '64px', borderRadius: '16px', flexShrink: 0,

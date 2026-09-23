@@ -65,7 +65,7 @@ export default function Footer() {
 
       {/* Main Footer */}
       <div className="container-full" style={{ paddingTop: '64px', paddingBottom: '40px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr repeat(3, auto)', gap: '48px', alignItems: 'start' }}>
+        <div className="footer-main-grid">
 
           {/* Brand */}
           <div>

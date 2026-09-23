@@ -50,7 +50,7 @@ export default function Header() {
     <>
       {/* Top Bar */}
       <div style={{ background: 'var(--bg-surface)', borderBottom: '1px solid var(--border-subtle)', padding: '8px 0' }}>
-        <div className="container-full" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '13px', color: 'var(--text-secondary)' }}>
+        <div className="container-full" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '13px', color: 'var(--text-secondary)', flexWrap: 'wrap', gap: '4px 12px' }}>
           <span>🚚 Free Freight Shipping on orders over $500</span>
           <a href="tel:+18005551234" style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--chrome)', textDecoration: 'none', fontWeight: '600' }}>
             <Phone size={13} /> 1-800-555-1234
