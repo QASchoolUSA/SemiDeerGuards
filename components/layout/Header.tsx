@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import Link from 'next/link'
 import { ShoppingCart, Menu, X, Phone, ChevronDown, Search } from 'lucide-react'
 import { useCartStore } from '@/lib/store/cart'
@@ -38,13 +38,34 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
+  const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const { totalItems, isOpen, openCart, closeCart } = useCartStore()
   const itemCount = totalItems()
+
+  const handleMouseEnter = (label: string) => {
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current)
+      closeTimeoutRef.current = null
+    }
+    setActiveDropdown(label)
+  }
+
+  const handleMouseLeave = () => {
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current)
+    }
+    closeTimeoutRef.current = setTimeout(() => {
+      setActiveDropdown(null)
+    }, 180)
+  }
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
     window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current)
+    }
   }, [])
 
   return (
@@ -93,8 +114,8 @@ export default function Header() {
               <div
                 key={link.label}
                 style={{ position: 'relative' }}
-                onMouseEnter={() => link.children && setActiveDropdown(link.label)}
-                onMouseLeave={() => setActiveDropdown(null)}
+                onMouseEnter={() => link.children && handleMouseEnter(link.label)}
+                onMouseLeave={handleMouseLeave}
               >
                 <Link
                   href={link.href}
@@ -118,37 +139,51 @@ export default function Header() {
                   {link.children && <ChevronDown size={14} />}
                 </Link>
 
-                {/* Dropdown */}
+                {/* Dropdown with invisible hit bridge */}
                 {link.children && activeDropdown === link.label && (
-                  <div style={{
-                    position: 'absolute', top: '100%', left: '0',
-                    background: 'var(--bg-elevated)', border: '1px solid var(--border-default)',
-                    borderRadius: 'var(--radius-md)', padding: '8px',
-                    minWidth: '180px', boxShadow: 'var(--shadow-dropdown)',
-                    zIndex: 50, marginTop: '4px'
-                  }}>
-                    {link.children.map((child) => (
-                      <Link
-                        key={child.label}
-                        href={child.href}
-                        style={{
-                          display: 'block', padding: '10px 14px',
-                          color: 'var(--text-secondary)', textDecoration: 'none',
-                          fontSize: '14px', borderRadius: 'var(--radius-sm)',
-                          transition: 'all var(--transition-fast)',
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.color = 'var(--text-primary)'
-                          e.currentTarget.style.background = 'var(--bg-hover)'
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.color = 'var(--text-secondary)'
-                          e.currentTarget.style.background = 'transparent'
-                        }}
-                      >
-                        {child.label}
-                      </Link>
-                    ))}
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: '100%',
+                      left: '0',
+                      paddingTop: '6px',
+                      zIndex: 50,
+                    }}
+                    onMouseEnter={() => handleMouseEnter(link.label)}
+                    onMouseLeave={handleMouseLeave}
+                  >
+                    <div style={{
+                      background: 'var(--bg-elevated)',
+                      border: '1px solid var(--border-default)',
+                      borderRadius: 'var(--radius-md)',
+                      padding: '8px',
+                      minWidth: '190px',
+                      boxShadow: 'var(--shadow-dropdown)',
+                    }}>
+                      {link.children.map((child) => (
+                        <Link
+                          key={child.label}
+                          href={child.href}
+                          onClick={() => setActiveDropdown(null)}
+                          style={{
+                            display: 'block', padding: '10px 14px',
+                            color: 'var(--text-secondary)', textDecoration: 'none',
+                            fontSize: '14px', borderRadius: 'var(--radius-sm)',
+                            transition: 'all var(--transition-fast)',
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.color = 'var(--text-primary)'
+                            e.currentTarget.style.background = 'var(--bg-hover)'
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.color = 'var(--text-secondary)'
+                            e.currentTarget.style.background = 'transparent'
+                          }}
+                        >
+                          {child.label}
+                        </Link>
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>
