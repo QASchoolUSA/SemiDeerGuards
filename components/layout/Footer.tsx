@@ -46,17 +46,13 @@ export default function Footer() {
       {/* Trust Banner */}
       <div style={{ background: 'var(--bg-elevated)', borderBottom: '1px solid var(--border-subtle)', padding: '24px 0' }}>
         <div className="container-full">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '20px' }}>
+          <div className="footer-trust-grid">
             {TRUST_ITEMS.map(({ icon: Icon, label }) => (
-              <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <div style={{
-                  width: '40px', height: '40px', borderRadius: '10px',
-                  background: 'rgba(74,158,255,0.1)', border: '1px solid rgba(74,158,255,0.2)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0
-                }}>
+              <div key={label} className="footer-trust-item">
+                <div className="footer-trust-icon">
                   <Icon size={18} color="var(--blue-accent)" />
                 </div>
-                <span style={{ fontSize: '14px', fontWeight: '600', color: 'var(--text-secondary)' }}>{label}</span>
+                <span className="footer-trust-label">{label}</span>
               </div>
             ))}
           </div>
@@ -68,9 +64,17 @@ export default function Footer() {
         <div className="footer-main-grid">
 
           {/* Brand */}
-          <div>
+          <div style={{ minWidth: 0 }}>
             <Link href="/" style={{ textDecoration: 'none' }}>
-              <div style={{ fontFamily: 'Barlow Condensed, sans-serif', fontSize: '28px', fontWeight: '900', textTransform: 'uppercase', marginBottom: '12px' }}>
+              <div style={{
+                fontFamily: 'Barlow Condensed, sans-serif',
+                fontSize: 'clamp(22px, 5vw, 28px)',
+                fontWeight: '900',
+                textTransform: 'uppercase',
+                marginBottom: '12px',
+                overflowWrap: 'break-word',
+                wordBreak: 'break-word',
+              }}>
                 Semi<span className="gradient-text-chrome">Deer</span>Guards
               </div>
             </Link>
@@ -80,19 +84,19 @@ export default function Footer() {
 
             {/* Contact */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '24px' }}>
-              <a href="tel:+18005551234" style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-secondary)', textDecoration: 'none', fontSize: '14px' }}>
-                <Phone size={14} color="var(--blue-accent)" /> 1-800-555-1234
+              <a href="tel:+18005551234" style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-secondary)', textDecoration: 'none', fontSize: '14px', minWidth: 0, wordBreak: 'break-word' }}>
+                <Phone size={14} color="var(--blue-accent)" style={{ flexShrink: 0 }} /> 1-800-555-1234
               </a>
-              <a href="mailto:sales@semideerguards.com" style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-secondary)', textDecoration: 'none', fontSize: '14px' }}>
-                <Mail size={14} color="var(--blue-accent)" /> sales@semideerguards.com
+              <a href="mailto:sales@semideerguards.com" style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-secondary)', textDecoration: 'none', fontSize: '14px', minWidth: 0, wordBreak: 'break-all' }}>
+                <Mail size={14} color="var(--blue-accent)" style={{ flexShrink: 0 }} /> sales@semideerguards.com
               </a>
-              <span style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-secondary)', fontSize: '14px' }}>
-                <MapPin size={14} color="var(--blue-accent)" /> 1234 Industrial Blvd, Omaha, NE
+              <span style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-secondary)', fontSize: '14px', minWidth: 0, wordBreak: 'break-word' }}>
+                <MapPin size={14} color="var(--blue-accent)" style={{ flexShrink: 0 }} /> 1234 Industrial Blvd, Omaha, NE
               </span>
             </div>
 
             {/* Social */}
-            <div style={{ display: 'flex', gap: '10px' }}>
+            <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
               {SOCIAL_LINKS.map(({ label, href, path }) => (
                 <a
                   key={label}
@@ -104,6 +108,7 @@ export default function Footer() {
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     color: 'var(--text-muted)', textDecoration: 'none',
                     transition: 'all var(--transition-fast)',
+                    flexShrink: 0,
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.color = 'var(--blue-accent)'
@@ -126,16 +131,25 @@ export default function Footer() {
 
           {/* Link Columns */}
           {Object.entries(FOOTER_LINKS).map(([group, links]) => (
-            <div key={group}>
+            <div key={group} style={{ minWidth: 0 }}>
               <h3 style={{ fontFamily: 'Barlow Condensed, sans-serif', fontSize: '16px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--text-primary)', marginBottom: '16px' }}>
                 {group}
               </h3>
               <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 {links.map((link) => (
-                  <li key={link.label}>
+                  <li key={link.label} style={{ minWidth: 0 }}>
                     <Link
                       href={link.href}
-                      style={{ color: 'var(--text-secondary)', textDecoration: 'none', fontSize: '14px', transition: 'color var(--transition-fast)' }}
+                      style={{
+                        color: 'var(--text-secondary)',
+                        textDecoration: 'none',
+                        fontSize: '14px',
+                        transition: 'color var(--transition-fast)',
+                        display: 'inline-block',
+                        maxWidth: '100%',
+                        overflowWrap: 'break-word',
+                        wordBreak: 'break-word',
+                      }}
                       onMouseEnter={(e) => e.currentTarget.style.color = 'var(--chrome)'}
                       onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}
                     >
@@ -151,11 +165,11 @@ export default function Footer() {
         <div className="divider-glow" style={{ margin: '40px 0 28px' }} />
 
         {/* Bottom Row */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
           <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
             © {new Date().getFullYear()} SemiDeerGuards. All rights reserved.
           </p>
-          <div style={{ display: 'flex', gap: '20px' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px 20px' }}>
             {['Privacy Policy', 'Terms of Service', 'Shipping Policy'].map((label) => (
               <Link
                 key={label}
