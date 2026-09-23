@@ -1,15 +1,11 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
-import { client } from '@/sanity/lib/client'
-import { PRODUCT_BY_SLUG_QUERY } from '@/sanity/lib/queries'
 import ProductDetailClient from '@/components/products/ProductDetailClient'
-import ProductCard from '@/components/products/ProductCard'
 
 interface Props {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }
 
-// Placeholder for dev
 const PLACEHOLDER_PRODUCT = {
   _id: 'placeholder-detail',
   name: 'Heavy Duty Guard — Volvo VNL 760',
@@ -25,14 +21,14 @@ const PLACEHOLDER_PRODUCT = {
   weight: 92,
   description: [],
   specifications: [
-    { label: 'Material', value: 'Heavy-Gauge 14-Gauge Steel' },
-    { label: 'Finish', value: 'Black Powder Coat' },
-    { label: 'Weight', value: '92 lbs' },
-    { label: 'Width', value: '92"' },
-    { label: 'Height', value: '38"' },
-    { label: 'CAS Compatible', value: 'Yes — Bendix Fusion, Mobileye' },
-    { label: 'Warranty', value: '3 Years Limited' },
-    { label: 'Install Time', value: '2–4 Hours' },
+    { label: 'Material',        value: 'Heavy-Gauge 14-Gauge Steel' },
+    { label: 'Finish',          value: 'Black Powder Coat' },
+    { label: 'Weight',          value: '92 lbs' },
+    { label: 'Width',           value: '92"' },
+    { label: 'Height',          value: '38"' },
+    { label: 'CAS Compatible',  value: 'Yes — Bendix Fusion, Mobileye' },
+    { label: 'Warranty',        value: '3 Years Limited' },
+    { label: 'Install Time',    value: '2–4 Hours' },
     { label: 'Hardware Included', value: 'Yes' },
   ],
   images: [],
@@ -46,12 +42,14 @@ const PLACEHOLDER_PRODUCT = {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  let product: any
+  const { slug } = await params
+  let product: any = null
   try {
-    product = await client.fetch(PRODUCT_BY_SLUG_QUERY, { slug: params.slug })
-  } catch {
-    product = null
-  }
+    const { client } = await import('@/sanity/lib/client')
+    const { PRODUCT_BY_SLUG_QUERY } = await import('@/sanity/lib/queries')
+    product = await client.fetch(PRODUCT_BY_SLUG_QUERY, { slug })
+  } catch { product = null }
+
   product = product || PLACEHOLDER_PRODUCT
 
   return {
@@ -61,17 +59,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ProductPage({ params }: Props) {
-  let product: any
-  try {
-    product = await client.fetch(PRODUCT_BY_SLUG_QUERY, { slug: params.slug })
-  } catch {
-    product = null
-  }
+  const { slug } = await params
 
-  // For dev/placeholder mode, use placeholder data
-  if (!product && params.slug === 'heavy-duty-guard-volvo-vnl-760') {
-    product = PLACEHOLDER_PRODUCT
-  }
+  let product: any = null
+  try {
+    const { client } = await import('@/sanity/lib/client')
+    const { PRODUCT_BY_SLUG_QUERY } = await import('@/sanity/lib/queries')
+    product = await client.fetch(PRODUCT_BY_SLUG_QUERY, { slug })
+  } catch { product = null }
+
+  // For dev/placeholder mode, match any slug
+  if (!product) product = { ...PLACEHOLDER_PRODUCT, slug: { current: slug } }
 
   if (!product) notFound()
 
@@ -80,7 +78,6 @@ export default async function ProductPage({ params }: Props) {
       <div className="container-full" style={{ paddingTop: '60px', paddingBottom: '80px' }}>
         <ProductDetailClient product={product} />
 
-        {/* Compatible Trucks Section */}
         {product.compatibleTrucks && product.compatibleTrucks.length > 0 && (
           <div style={{ marginTop: '80px', paddingTop: '60px', borderTop: '1px solid var(--border-subtle)' }}>
             <h2 className="text-heading" style={{ marginBottom: '32px' }}>
