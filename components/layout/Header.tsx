@@ -32,6 +32,7 @@ const NAV_LINKS = [
   },
   { label: 'About', href: '/about' },
   { label: 'Contact', href: '/contact' },
+  { label: '✨ Demo Studio', href: '/demo' },
 ]
 
 export default function Header() {
