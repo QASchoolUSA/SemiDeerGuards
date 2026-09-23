@@ -50,11 +50,11 @@ export default function HowItWorks() {
           </h2>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '2px', position: 'relative' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: '2px', position: 'relative', width: '100%' }}>
           {STEPS.map((step, i) => {
             const Icon = step.icon
             return (
-              <div key={step.number} style={{ position: 'relative' }}>
+              <div key={step.number} style={{ position: 'relative', minWidth: 0 }}>
                 {/* Connector line (desktop) */}
                 {i < STEPS.length - 1 && (
                   <div style={{
@@ -64,7 +64,7 @@ export default function HowItWorks() {
                   }} className="connector-line" />
                 )}
 
-                <div style={{ padding: '32px 28px', textAlign: 'center', position: 'relative', zIndex: 1 }}>
+                <div style={{ padding: 'clamp(24px, 4vw, 32px) clamp(12px, 3vw, 28px)', textAlign: 'center', position: 'relative', zIndex: 1 }}>
                   {/* Number */}
                   <div style={{ fontFamily: 'Barlow Condensed, sans-serif', fontSize: '64px', fontWeight: '900', color: 'var(--border-default)', lineHeight: '1', marginBottom: '-10px', userSelect: 'none' }}>
                     {step.number}

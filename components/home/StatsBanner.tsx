@@ -42,12 +42,12 @@ function StatItem({ value, label, suffix, decimal }: (typeof STATS)[0]) {
   }, [])
 
   return (
-    <div ref={ref} style={{ textAlign: 'center', padding: '40px 20px' }}>
-      <div style={{ fontFamily: 'Barlow Condensed, sans-serif', fontSize: 'clamp(48px, 6vw, 72px)', fontWeight: '900', lineHeight: '1', color: 'var(--text-primary)', marginBottom: '8px' }}>
+    <div ref={ref} style={{ textAlign: 'center', padding: 'clamp(24px, 5vw, 40px) clamp(8px, 2vw, 20px)' }}>
+      <div style={{ fontFamily: 'Barlow Condensed, sans-serif', fontSize: 'clamp(36px, 6vw, 64px)', fontWeight: '900', lineHeight: '1', color: 'var(--text-primary)', marginBottom: '8px' }}>
         <span className="gradient-text-chrome">{count}</span>
         <span style={{ color: 'var(--blue-accent)' }}>{suffix}</span>
       </div>
-      <div style={{ fontSize: '14px', fontWeight: '600', color: 'var(--text-muted)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+      <div style={{ fontSize: 'clamp(11px, 2.5vw, 14px)', fontWeight: '600', color: 'var(--text-muted)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
         {label}
       </div>
     </div>
@@ -69,22 +69,14 @@ export default function StatsBanner() {
       }} />
 
       <div className="container-full" style={{ position: 'relative' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)' }}>
-          {STATS.map((stat, i) => (
-            <div key={stat.label} style={{ borderRight: i < STATS.length - 1 ? '1px solid var(--border-subtle)' : 'none' }}>
+        <div className="stats-grid">
+          {STATS.map((stat) => (
+            <div key={stat.label}>
               <StatItem {...stat} />
             </div>
           ))}
         </div>
       </div>
-
-      <style>{`
-        @media (max-width: 600px) {
-          section[aria-label="Company Statistics"] .container-full > div {
-            grid-template-columns: repeat(2, 1fr) !important;
-          }
-        }
-      `}</style>
     </section>
   )
 }

@@ -62,7 +62,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
   }
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '60px', alignItems: 'start' }}>
+    <div className="pdp-grid">
       {/* ── Images ── */}
       <div>
         {/* Main Image */}
@@ -261,11 +261,6 @@ export default function ProductDetailClient({ product }: { product: Product }) {
 
         <style>{`
           @keyframes spin { to { transform: rotate(360deg); } }
-          @media (max-width: 900px) {
-            div[style*="grid-template-columns: 1fr 1fr"] {
-              grid-template-columns: 1fr !important;
-            }
-          }
         `}</style>
       </div>
     </div>

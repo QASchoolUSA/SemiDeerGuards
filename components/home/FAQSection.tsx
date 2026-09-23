@@ -42,9 +42,9 @@ export default function FAQSection() {
   return (
     <section className="section-padding" aria-label="Frequently Asked Questions">
       <div className="container-full">
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.5fr', gap: '64px', alignItems: 'start' }}>
+        <div className="faq-grid">
           {/* Left */}
-          <div style={{ position: 'sticky', top: '100px' }}>
+          <div className="faq-sidebar" style={{ position: 'sticky', top: '100px' }}>
             <div className="section-label">Got Questions?</div>
             <h2 className="text-display" style={{ marginBottom: '20px' }}>
               FAQ
@@ -100,17 +100,6 @@ export default function FAQSection() {
           </div>
         </div>
       </div>
-
-      <style>{`
-        @media (max-width: 768px) {
-          section[aria-label="Frequently Asked Questions"] > div > div {
-            grid-template-columns: 1fr !important;
-          }
-          section[aria-label="Frequently Asked Questions"] > div > div > div:first-child {
-            position: static !important;
-          }
-        }
-      `}</style>
     </section>
   )
 }

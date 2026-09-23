@@ -40,7 +40,7 @@ export default function CartPage() {
             </Link>
           </div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: '40px', alignItems: 'start' }}>
+          <div className="cart-layout-grid">
             {/* Items */}
             <div>
               {/* Free shipping progress */}
@@ -163,14 +163,6 @@ export default function CartPage() {
           </div>
         )}
       </div>
-
-      <style>{`
-        @media (max-width: 900px) {
-          div[style*="grid-template-columns: 1fr 380px"] {
-            grid-template-columns: 1fr !important;
-          }
-        }
-      `}</style>
     </div>
   )
 }

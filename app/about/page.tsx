@@ -26,14 +26,14 @@ export default function AboutPage() {
       {/* Values */}
       <div className="section-padding">
         <div className="container-full">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '28px', marginBottom: '80px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: '24px', marginBottom: '80px' }}>
             {[
               { icon: Shield, title: '3-Year Warranty', desc: 'Every guard we sell is backed by our industry-leading warranty because we stand behind our manufacturing quality.' },
               { icon: Award, title: 'Made in USA', desc: 'All guards are manufactured in our Omaha, Nebraska facility using American-sourced heavy-gauge steel.' },
               { icon: Truck, title: '10,000+ Guards Sold', desc: 'From owner-operators to major fleet companies, we have protected trucks across North America.' },
               { icon: Users, title: 'Expert Team', desc: 'Our team includes former long-haul drivers who understand what truckers actually need from their equipment.' },
             ].map(({ icon: Icon, title, desc }) => (
-              <div key={title} className="glass-card" style={{ padding: '28px', textAlign: 'center' }}>
+              <div key={title} className="glass-card" style={{ padding: '28px', textAlign: 'center', minWidth: 0 }}>
                 <div style={{ width: '52px', height: '52px', borderRadius: '12px', background: 'rgba(74,158,255,0.1)', border: '1px solid rgba(74,158,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
                   <Icon size={22} color="var(--blue-accent)" />
                 </div>
@@ -44,7 +44,7 @@ export default function AboutPage() {
           </div>
 
           {/* Story */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '60px', alignItems: 'center' }}>
+          <div className="about-story-grid">
             <div>
               <div className="section-label">Why We Exist</div>
               <h2 className="text-heading" style={{ marginBottom: '20px' }}>
@@ -88,12 +88,6 @@ export default function AboutPage() {
           <Link href="/products" className="btn btn-primary btn-lg">Shop All Guards</Link>
         </div>
       </div>
-
-      <style>{`
-        @media (max-width: 768px) {
-          div[style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
-        }
-      `}</style>
     </div>
   )
 }

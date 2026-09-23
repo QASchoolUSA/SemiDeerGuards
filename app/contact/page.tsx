@@ -19,9 +19,9 @@ export default function ContactPage() {
           </p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.5fr', gap: '48px', alignItems: 'start' }}>
+        <div className="contact-layout-grid">
           {/* Contact Info */}
-          <div>
+          <div style={{ minWidth: 0 }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', marginBottom: '40px' }}>
               {[
                 { icon: Phone, label: 'Phone', value: '1-800-555-1234', href: 'tel:+18005551234', note: 'Mon–Fri 8am–6pm CST' },
@@ -29,16 +29,16 @@ export default function ContactPage() {
                 { icon: MapPin, label: 'Address', value: '1234 Industrial Blvd\nOmaha, NE 68102', note: 'Not open to public walk-ins' },
                 { icon: Clock, label: 'Hours', value: 'Mon–Fri: 8am–6pm CST', note: 'Closed weekends & holidays' },
               ].map(({ icon: Icon, label, value, href, note }) => (
-                <div key={label} style={{ display: 'flex', gap: '16px' }}>
+                <div key={label} style={{ display: 'flex', gap: '16px', minWidth: 0 }}>
                   <div style={{ width: '44px', height: '44px', borderRadius: '10px', background: 'rgba(74,158,255,0.1)', border: '1px solid rgba(74,158,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                     <Icon size={18} color="var(--blue-accent)" />
                   </div>
-                  <div>
+                  <div style={{ minWidth: 0 }}>
                     <p style={{ fontSize: '12px', color: 'var(--text-muted)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '4px' }}>{label}</p>
                     {href ? (
-                      <a href={href} style={{ fontSize: '16px', fontWeight: '600', color: 'var(--chrome)', textDecoration: 'none' }}>{value}</a>
+                      <a href={href} style={{ fontSize: '16px', fontWeight: '600', color: 'var(--chrome)', textDecoration: 'none', overflowWrap: 'break-word', wordBreak: 'break-word' }}>{value}</a>
                     ) : (
-                      <p style={{ fontSize: '15px', fontWeight: '600', color: 'var(--chrome)', whiteSpace: 'pre-line' }}>{value}</p>
+                      <p style={{ fontSize: '15px', fontWeight: '600', color: 'var(--chrome)', whiteSpace: 'pre-line', overflowWrap: 'break-word', wordBreak: 'break-word' }}>{value}</p>
                     )}
                     {note && <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '2px' }}>{note}</p>}
                   </div>
@@ -47,25 +47,25 @@ export default function ContactPage() {
             </div>
 
             {/* Why Contact */}
-            <div className="glass-card" style={{ padding: '24px' }}>
+            <div className="glass-card" style={{ padding: '24px', minWidth: 0 }}>
               <h3 style={{ fontFamily: 'Barlow Condensed, sans-serif', fontSize: '18px', fontWeight: '700', textTransform: 'uppercase', marginBottom: '16px' }}>
                 We Can Help With
               </h3>
               {['Fitment verification for your truck', 'Bulk fleet order pricing', 'Custom mounting requirements', 'Installation questions', 'Warranty & return requests'].map((item) => (
                 <div key={item} style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px', fontSize: '14px', color: 'var(--text-secondary)' }}>
-                  <CheckCircle2 size={14} color="var(--success)" /> {item}
+                  <CheckCircle2 size={14} color="var(--success)" style={{ flexShrink: 0 }} /> {item}
                 </div>
               ))}
             </div>
           </div>
 
           {/* Contact Form */}
-          <div className="glass-card" style={{ padding: '36px' }}>
+          <div className="glass-card" style={{ padding: 'clamp(20px, 4vw, 36px)', minWidth: 0 }}>
             <h2 style={{ fontFamily: 'Barlow Condensed, sans-serif', fontSize: '24px', fontWeight: '700', textTransform: 'uppercase', marginBottom: '28px' }}>
               Send a Message
             </h2>
             <form style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+              <div className="form-name-row">
                 <div>
                   <label htmlFor="first-name" style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '8px' }}>First Name</label>
                   <input id="first-name" type="text" className="input" placeholder="Mike" autoComplete="given-name" />
@@ -109,13 +109,6 @@ export default function ContactPage() {
           </div>
         </div>
       </div>
-
-      <style>{`
-        @media (max-width: 900px) {
-          div[style*="grid-template-columns: 1fr 1.5fr"] { grid-template-columns: 1fr !important; }
-          div[style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
-        }
-      `}</style>
     </div>
   )
 }

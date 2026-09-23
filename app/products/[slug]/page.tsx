@@ -83,7 +83,7 @@ export default async function ProductPage({ params }: Props) {
             <h2 className="text-heading" style={{ marginBottom: '32px' }}>
               Compatible <span className="gradient-text-chrome">Truck Models</span>
             </h2>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '16px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 200px), 1fr))', gap: '16px' }}>
               {product.compatibleTrucks.map((truck: any) => (
                 <div key={`${truck.brand}-${truck.model}`} className="glass-card" style={{ padding: '20px' }}>
                   <p style={{ fontWeight: '700', color: 'var(--text-primary)', marginBottom: '4px' }}>{truck.brand} {truck.model}</p>

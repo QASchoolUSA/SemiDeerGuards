@@ -52,7 +52,7 @@ export default function CheckoutPage() {
             <a href="/products" className="btn btn-primary">Shop Now</a>
           </div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 360px', gap: '32px', alignItems: 'start' }}>
+          <div className="checkout-layout-grid">
             {/* Order Items */}
             <div className="glass-card" style={{ padding: '28px' }}>
               <h2 style={{ fontFamily: 'Barlow Condensed, sans-serif', fontSize: '18px', fontWeight: '700', textTransform: 'uppercase', marginBottom: '20px' }}>
@@ -134,9 +134,6 @@ export default function CheckoutPage() {
       </div>
       <style>{`
         @keyframes spin { to { transform: rotate(360deg); } }
-        @media (max-width: 700px) {
-          div[style*="grid-template-columns: 1fr 360px"] { grid-template-columns: 1fr !important; }
-        }
       `}</style>
     </div>
   )

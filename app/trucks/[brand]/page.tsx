@@ -74,17 +74,18 @@ export default async function TruckBrandPage({ params }: Props) {
           <Link href="/trucks" className="btn btn-ghost btn-sm" style={{ marginBottom: '24px', display: 'inline-flex' }}>
             <ArrowLeft size={14} /> All Brands
           </Link>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '16px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '16px', flexWrap: 'wrap' }}>
             <div style={{
-              width: '72px', height: '72px', borderRadius: '16px',
+              width: '64px', height: '64px', borderRadius: '16px',
               background: `${safeMeta.color}18`, border: `2px solid ${safeMeta.color}30`,
-              display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '36px'
+              display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '32px',
+              flexShrink: 0,
             }}>
               {safeMeta.emoji}
             </div>
-            <div>
+            <div style={{ minWidth: 0, flex: 1 }}>
               <p style={{ fontSize: '12px', color: 'var(--text-muted)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '6px' }}>Shop by Brand</p>
-              <h1 className="text-display">{safeMeta.display} <span className="gradient-text-chrome">Deer Guards</span></h1>
+              <h1 className="text-display" style={{ wordBreak: 'break-word', overflowWrap: 'break-word' }}>{safeMeta.display} <span className="gradient-text-chrome">Deer Guards</span></h1>
             </div>
           </div>
           <p className="text-subheading" style={{ maxWidth: '560px', marginBottom: '16px' }}>{safeMeta.description}</p>

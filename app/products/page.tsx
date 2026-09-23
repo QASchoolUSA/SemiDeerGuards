@@ -43,7 +43,7 @@ export default function ProductsPage() {
       </div>
 
       <div className="container-full" style={{ paddingTop: '40px', paddingBottom: '80px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '260px 1fr', gap: '40px', alignItems: 'start' }}>
+        <div className="products-layout-grid">
 
           {/* Sidebar Filters */}
           <aside className="filter-sidebar" aria-label="Product Filters">
@@ -118,15 +118,6 @@ export default function ProductsPage() {
           </div>
         </div>
       </div>
-
-      <style>{`
-        @media (max-width: 900px) {
-          aside.filter-sidebar { display: none; }
-          div[style*="grid-template-columns: 260px"] {
-            grid-template-columns: 1fr !important;
-          }
-        }
-      `}</style>
     </div>
   )
 }
