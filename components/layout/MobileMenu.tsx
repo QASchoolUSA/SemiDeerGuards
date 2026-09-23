@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { X, ShoppingCart, Truck } from 'lucide-react'
+import ThemeToggle from './ThemeToggle'
 
 interface NavLink {
   label: string
@@ -90,6 +91,9 @@ export default function MobileMenu({ isOpen, onClose, links }: MobileMenuProps) 
           <Link href="/trucks" className="btn btn-outline" onClick={onClose} style={{ width: '100%', justifyContent: 'center' }}>
             <Truck size={18} /> Browse by Truck Brand
           </Link>
+          <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '8px' }}>
+            <ThemeToggle showLabel={true} />
+          </div>
         </div>
       </div>
     </>

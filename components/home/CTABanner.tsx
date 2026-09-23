@@ -6,7 +6,7 @@ export default function CTABanner() {
     <section
       aria-label="Call to Action"
       style={{
-        background: 'linear-gradient(135deg, #0A1828 0%, #0D2040 40%, #0C1535 100%)',
+        background: 'var(--grad-cta)',
         borderTop: '1px solid var(--border-subtle)',
         borderBottom: '1px solid var(--border-subtle)',
         padding: 'var(--section-py) 0',

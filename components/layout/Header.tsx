@@ -6,6 +6,7 @@ import { ShoppingCart, Menu, X, Phone, ChevronDown, Search } from 'lucide-react'
 import { useCartStore } from '@/lib/store/cart'
 import CartDrawer from './CartDrawer'
 import MobileMenu from './MobileMenu'
+import ThemeToggle from './ThemeToggle'
 
 const NAV_LINKS = [
   {
@@ -60,7 +61,7 @@ export default function Header() {
 
       <header
         className={`header ${scrolled ? 'header-solid' : 'header-transparent'}`}
-        style={{ background: scrolled ? undefined : 'rgba(6,10,18,0.8)', backdropFilter: 'blur(16px)' }}
+        style={{ background: scrolled ? undefined : 'var(--header-bg-blur)', backdropFilter: 'blur(16px)' }}
       >
         <div className="container-full" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '72px' }}>
           {/* Logo */}
@@ -123,7 +124,7 @@ export default function Header() {
                     position: 'absolute', top: '100%', left: '0',
                     background: 'var(--bg-elevated)', border: '1px solid var(--border-default)',
                     borderRadius: 'var(--radius-md)', padding: '8px',
-                    minWidth: '180px', boxShadow: '0 16px 48px rgba(0,0,0,0.4)',
+                    minWidth: '180px', boxShadow: 'var(--shadow-dropdown)',
                     zIndex: 50, marginTop: '4px'
                   }}>
                     {link.children.map((child) => (
@@ -156,6 +157,9 @@ export default function Header() {
 
           {/* Actions */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {/* Theme Toggle */}
+            <ThemeToggle />
+
             {/* Cart */}
             <button
               id="cart-button"

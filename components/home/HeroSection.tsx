@@ -74,7 +74,7 @@ export default function HeroSection() {
                   href={`/trucks/${brand.toLowerCase()}`}
                   style={{
                     padding: '8px 18px',
-                    background: 'rgba(255,255,255,0.04)',
+                    background: 'var(--bg-elevated)',
                     border: '1px solid var(--border-default)',
                     borderRadius: '99px',
                     fontSize: '13px', fontWeight: '600',
@@ -86,12 +86,12 @@ export default function HeroSection() {
                   onMouseEnter={(e) => {
                     e.currentTarget.style.borderColor = 'var(--blue-accent)'
                     e.currentTarget.style.color = 'var(--blue-accent)'
-                    e.currentTarget.style.background = 'rgba(74,158,255,0.08)'
+                    e.currentTarget.style.background = 'var(--bg-hover)'
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.borderColor = 'var(--border-default)'
                     e.currentTarget.style.color = 'var(--text-secondary)'
-                    e.currentTarget.style.background = 'rgba(255,255,255,0.04)'
+                    e.currentTarget.style.background = 'var(--bg-elevated)'
                   }}
                 >
                   {brand}
