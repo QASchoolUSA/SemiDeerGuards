@@ -8,8 +8,7 @@ const BRANDS = ['Volvo', 'Kenworth', 'Freightliner', 'Peterbilt', 'Mack']
 export default function HeroSection() {
   return (
     <section
-      className="hero-bg"
-      style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', position: 'relative', paddingTop: '0' }}
+      className="hero-bg hero-section"
       aria-label="Hero"
     >
       {/* Grid overlay texture */}
@@ -33,15 +32,15 @@ export default function HeroSection() {
         pointerEvents: 'none',
       }} />
 
-      <div className="container-full" style={{ position: 'relative', zIndex: 1, paddingTop: '120px', paddingBottom: '80px' }}>
+      <div className="container-full" style={{ position: 'relative', zIndex: 1, paddingTop: 'clamp(28px, 5vw, 56px)', paddingBottom: 'clamp(48px, 6vw, 72px)' }}>
         <div style={{ maxWidth: '820px' }}>
           {/* Label */}
-          <div className="section-label animate-fade-in-up" style={{ marginBottom: '20px' }}>
+          <div className="section-label animate-fade-in-up" style={{ marginBottom: '16px' }}>
             Heavy-Duty Front-End Protection
           </div>
 
           {/* Main Headline */}
-          <h1 className="text-hero animate-fade-in-up anim-delay-100" style={{ marginBottom: '28px' }}>
+          <h1 className="text-hero animate-fade-in-up anim-delay-100" style={{ marginBottom: '22px' }}>
             <span style={{ display: 'block', color: 'var(--text-primary)' }}>Guard Your</span>
             <span style={{ display: 'block' }} className="gradient-text-chrome">Semi Truck.</span>
             <span style={{ display: 'block', color: 'var(--text-primary)' }}>Guard Your</span>
@@ -49,12 +48,12 @@ export default function HeroSection() {
           </h1>
 
           {/* Subheadline */}
-          <p className="text-subheading animate-fade-in-up anim-delay-200" style={{ maxWidth: '560px', marginBottom: '40px' }}>
+          <p className="text-subheading animate-fade-in-up anim-delay-200" style={{ maxWidth: '560px', marginBottom: '32px' }}>
             Premium deer guards engineered for Volvo, Kenworth, and Freightliner semi trucks. CAS-compatible, heavy-gauge steel. Protect your investment from costly front-end damage.
           </p>
 
           {/* CTAs */}
-          <div className="animate-fade-in-up anim-delay-300" style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', marginBottom: '52px' }}>
+          <div className="animate-fade-in-up anim-delay-300" style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', marginBottom: '40px' }}>
             <Link href="/products" className="btn btn-primary btn-lg" id="hero-shop-cta">
               Shop Deer Guards <ArrowRight size={18} />
             </Link>

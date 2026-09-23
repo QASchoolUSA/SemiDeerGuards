@@ -659,6 +659,20 @@ body {
   overflow: hidden;
 }
 
+.hero-section {
+  min-height: calc(100vh - 108px);
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    min-height: auto;
+    display: block;
+  }
+}
+
 .hero-bg::before {
   content: '';
   position: absolute;
