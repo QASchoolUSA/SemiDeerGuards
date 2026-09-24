@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import Image from 'next/image'
 import {
   Cpu,
   Layers,
@@ -14,8 +15,10 @@ import {
   Activity
 } from 'lucide-react'
 import { DEMO_PRODUCTS } from '../demoData'
+import { useDemoViewport } from '../DemoViewportContext'
 
 export default function BlueprintHome({ onExploreShop }: { onExploreShop?: () => void }) {
+  const { isMobile } = useDemoViewport()
   const [activePart, setActivePart] = useState<'tubing' | 'radar' | 'brackets' | 'hinge'>('tubing')
 
   const partDetails = {
@@ -84,7 +87,7 @@ export default function BlueprintHome({ onExploreShop }: { onExploreShop?: () =>
         TOLERANCE: ±0.015" // SPEC: SAE-J1455
       </div>
 
-      <div style={{ position: 'relative', zIndex: 10, maxWidth: '1360px', margin: '0 auto', padding: '60px 24px 100px' }}>
+      <div style={{ position: 'relative', zIndex: 10, maxWidth: '1360px', margin: '0 auto', padding: isMobile ? '24px 14px 60px' : '60px 24px 100px' }}>
         {/* Top Header Badge */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
           <span
@@ -108,7 +111,7 @@ export default function BlueprintHome({ onExploreShop }: { onExploreShop?: () =>
         </div>
 
         {/* Hero Section */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.2fr) minmax(0, 0.8fr)', gap: '40px', alignItems: 'center', marginBottom: '60px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'minmax(0, 1.2fr) minmax(0, 0.8fr)', gap: isMobile ? '24px' : '40px', alignItems: 'center', marginBottom: '60px' }}>
           <div>
             <h1
               style={{
@@ -175,7 +178,7 @@ export default function BlueprintHome({ onExploreShop }: { onExploreShop?: () =>
             <div
               style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(3, 1fr)',
+                gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
                 gap: '16px',
                 borderTop: '1px dashed rgba(0, 210, 255, 0.25)',
                 paddingTop: '24px',
@@ -377,7 +380,7 @@ export default function BlueprintHome({ onExploreShop }: { onExploreShop?: () =>
             </button>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
             {DEMO_PRODUCTS.slice(0, 3).map((prod) => (
               <div
                 key={prod.id}
@@ -390,6 +393,12 @@ export default function BlueprintHome({ onExploreShop }: { onExploreShop?: () =>
                   gap: '12px',
                 }}
               >
+                <div style={{ position: 'relative', width: '100%', height: '140px', borderRadius: '4px', overflow: 'hidden', border: '1px solid rgba(0, 210, 255, 0.3)', background: '#020912' }}>
+                  <Image src={prod.image} alt={prod.name} fill sizes="300px" style={{ objectFit: 'cover' }} />
+                  <div style={{ position: 'absolute', top: '6px', left: '6px', background: 'rgba(4, 16, 30, 0.85)', padding: '2px 6px', fontSize: '9px', color: '#00D2FF', fontWeight: 700 }}>
+                    {prod.truck.toUpperCase()}
+                  </div>
+                </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#688CA5' }}>
                   <span>TRUCK: {prod.truck}</span>
                   <span style={{ color: '#00D2FF' }}>{prod.tier}</span>

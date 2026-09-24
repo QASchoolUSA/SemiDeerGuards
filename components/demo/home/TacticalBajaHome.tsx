@@ -1,10 +1,13 @@
 'use client'
 
 import React, { useState } from 'react'
+import Image from 'next/image'
 import { Shield, Zap, Flame, Award, ChevronRight, AlertOctagon, Gauge } from 'lucide-react'
 import { DEMO_PRODUCTS } from '../demoData'
+import { useDemoViewport } from '../DemoViewportContext'
 
 export default function TacticalBajaHome({ onExploreShop }: { onExploreShop?: () => void }) {
+  const { isMobile } = useDemoViewport()
   const [selectedTier, setSelectedTier] = useState<'Tier 1' | 'Tier 2' | 'Tier 3'>('Tier 2')
 
   const tierInfo = {
@@ -68,7 +71,7 @@ export default function TacticalBajaHome({ onExploreShop }: { onExploreShop?: ()
         }}
       />
 
-      <div style={{ maxWidth: '1360px', margin: '0 auto', padding: '60px 24px 100px', position: 'relative', zIndex: 10 }}>
+      <div style={{ maxWidth: '1360px', margin: '0 auto', padding: isMobile ? '24px 14px 60px' : '60px 24px 100px', position: 'relative', zIndex: 10 }}>
         {/* Aggressive Chamfered Badge */}
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 16px', background: '#FF6B00', color: '#000', fontWeight: 900, fontSize: '12px', letterSpacing: '0.12em', clipPath: 'polygon(0 0, 95% 0, 100% 100%, 5% 100%)', marginBottom: '24px' }}>
           <Flame size={16} />
@@ -76,7 +79,7 @@ export default function TacticalBajaHome({ onExploreShop }: { onExploreShop?: ()
         </div>
 
         {/* Hero Banner Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.2fr) minmax(0, 0.8fr)', gap: '48px', alignItems: 'center', marginBottom: '70px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'minmax(0, 1.2fr) minmax(0, 0.8fr)', gap: isMobile ? '24px' : '48px', alignItems: 'center', marginBottom: '70px' }}>
           <div>
             <h1
               style={{
@@ -169,7 +172,7 @@ export default function TacticalBajaHome({ onExploreShop }: { onExploreShop?: ()
             </div>
 
             {/* Tier Buttons */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px', marginBottom: '24px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', gap: '8px', marginBottom: '24px' }}>
               {(['Tier 1', 'Tier 2', 'Tier 3'] as const).map((tier) => (
                 <button
                   key={tier}
@@ -236,7 +239,7 @@ export default function TacticalBajaHome({ onExploreShop }: { onExploreShop?: ()
             BATTLE-TESTED FLEET BUILDS
           </h2>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' }}>
             {DEMO_PRODUCTS.slice(0, 3).map((prod) => (
               <div
                 key={prod.id}
@@ -250,8 +253,14 @@ export default function TacticalBajaHome({ onExploreShop }: { onExploreShop?: ()
                   position: 'relative',
                 }}
               >
+                <div style={{ position: 'relative', width: '100%', height: '140px', borderRadius: '4px', overflow: 'hidden', background: '#0D0A08', border: '1px solid rgba(255, 107, 0, 0.3)' }}>
+                  <Image src={prod.image} alt={prod.name} fill sizes="300px" style={{ objectFit: 'cover' }} />
+                  <div style={{ position: 'absolute', top: '6px', left: '6px', background: '#FF6B00', color: '#000', fontSize: '9px', fontWeight: 900, padding: '2px 6px', textTransform: 'uppercase' }}>
+                    {prod.truck}
+                  </div>
+                </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ background: '#FF6B00', color: '#000', fontSize: '10px', fontWeight: 900, padding: '3px 8px', textTransform: 'uppercase' }}>
+                  <span style={{ color: '#FF6B00', fontSize: '11px', fontWeight: 900, textTransform: 'uppercase' }}>
                     {prod.truck} SPECIALTY
                   </span>
                   <span style={{ fontSize: '12px', fontWeight: 800, color: '#F97316' }}>{prod.tier}</span>

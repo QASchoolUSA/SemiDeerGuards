@@ -1,9 +1,12 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import DemoStudioNav from '@/components/demo/DemoStudioNav'
+import DemoStudioNav, { ViewportMode } from '@/components/demo/DemoStudioNav'
 import DesignSpecsDrawer from '@/components/demo/DesignSpecsDrawer'
+import MobileDeviceFrame from '@/components/demo/MobileDeviceFrame'
+import { DemoViewportProvider } from '@/components/demo/DemoViewportContext'
 import { ARCHETYPES } from '@/components/demo/demoData'
+import { Monitor, Smartphone, Columns } from 'lucide-react'
 
 // The 12 Distinct Homepage Components
 import BlueprintHome from '@/components/demo/home/BlueprintHome'
@@ -36,7 +39,7 @@ import SpeedTerminalShop from '@/components/demo/shop/SpeedTerminalShop'
 export default function DemoPage() {
   const [currentOption, setCurrentOption] = useState<number>(1)
   const [viewMode, setViewMode] = useState<'home' | 'shop'>('home')
-  const [viewport, setViewport] = useState<'desktop' | 'tablet' | 'mobile'>('desktop')
+  const [viewport, setViewport] = useState<ViewportMode>('desktop')
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false)
   const [isInfoOpen, setIsInfoOpen] = useState<boolean>(false)
 
@@ -54,6 +57,12 @@ export default function DemoPage() {
         setViewMode('home')
       } else if (e.key.toLowerCase() === 's') {
         setViewMode('shop')
+      } else if (e.key.toLowerCase() === 'd') {
+        setViewport('desktop')
+      } else if (e.key.toLowerCase() === 'm') {
+        setViewport('mobile')
+      } else if (e.key.toLowerCase() === 'c') {
+        setViewport('side-by-side')
       } else if (e.key.toLowerCase() === 'f') {
         setIsFullscreen((prev) => !prev)
       } else if (e.key.toLowerCase() === 'i') {
@@ -106,36 +115,6 @@ export default function DemoPage() {
     }
   }
 
-  // Device frame styles
-  const getContainerStyle = () => {
-    if (viewport === 'tablet') {
-      return {
-        maxWidth: '768px',
-        margin: '32px auto',
-        borderRadius: '24px',
-        overflow: 'hidden',
-        boxShadow: '0 25px 60px -15px rgba(0, 0, 0, 0.9), 0 0 0 12px #1E293B',
-        border: '1px solid rgba(255, 255, 255, 0.1)',
-        minHeight: '800px',
-      }
-    }
-    if (viewport === 'mobile') {
-      return {
-        maxWidth: '390px',
-        margin: '32px auto',
-        borderRadius: '36px',
-        overflow: 'hidden',
-        boxShadow: '0 25px 60px -15px rgba(0, 0, 0, 0.9), 0 0 0 12px #1E293B',
-        border: '1px solid rgba(255, 255, 255, 0.1)',
-        minHeight: '844px',
-      }
-    }
-    return {
-      width: '100%',
-      minHeight: '100vh',
-    }
-  }
-
   return (
     <div
       style={{
@@ -161,31 +140,119 @@ export default function DemoPage() {
         setIsInfoOpen={setIsInfoOpen}
       />
 
-      {/* Main Display Canvas (Framed or Full Fluid) */}
-      <main style={{ paddingBottom: viewport !== 'desktop' ? '60px' : 0 }}>
-        {/* Device Viewport Indicator Pill */}
-        {viewport !== 'desktop' && (
-          <div style={{ textAlign: 'center', paddingTop: '16px' }}>
-            <span
-              style={{
-                display: 'inline-block',
-                background: 'rgba(255,255,255,0.08)',
-                color: '#94A3B8',
-                fontSize: '11px',
-                fontWeight: 600,
-                padding: '4px 12px',
-                borderRadius: '99px',
-                border: '1px solid rgba(255,255,255,0.1)',
-              }}
-            >
-              Simulating {viewport === 'tablet' ? 'iPad / Tablet (768px)' : 'iPhone / Mobile (390px)'}
-            </span>
+      {/* Main Display Canvas */}
+      <main style={{ padding: viewport === 'side-by-side' ? '24px 20px 80px' : '0 0 60px' }}>
+        
+        {/* DESKTOP VIEW */}
+        {viewport === 'desktop' && (
+          <div style={{ width: '100%', minHeight: '100vh' }}>
+            <DemoViewportProvider forcedViewport="desktop">
+              {renderDesign()}
+            </DemoViewportProvider>
           </div>
         )}
 
-        <div style={getContainerStyle()}>
-          {renderDesign()}
-        </div>
+        {/* MOBILE VIEW */}
+        {viewport === 'mobile' && (
+          <div style={{ padding: '24px 16px 80px' }}>
+            <MobileDeviceFrame title={`Option #${currentOption.toString().padStart(2, '0')} (${viewMode.toUpperCase()})`}>
+              {renderDesign()}
+            </MobileDeviceFrame>
+          </div>
+        )}
+
+        {/* SIDE-BY-SIDE COMPARE VIEW (Desktop + Mobile) */}
+        {viewport === 'side-by-side' && (
+          <div style={{ maxWidth: '1700px', margin: '0 auto' }}>
+            {/* Header info bar */}
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: '12px 20px',
+                background: 'rgba(15, 23, 42, 0.8)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                borderRadius: '12px',
+                marginBottom: '28px',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Columns size={16} color="#C084FC" />
+                <span style={{ fontSize: '13px', fontWeight: 800, color: '#FFF' }}>
+                  Desktop vs. Mobile Phone Side-by-Side Comparison
+                </span>
+                <span style={{ fontSize: '11px', color: '#94A3B8' }}>
+                  (Testing responsive layout conversion simultaneously)
+                </span>
+              </div>
+
+              <div style={{ display: 'flex', gap: '16px', fontSize: '12px' }}>
+                <span style={{ color: '#60A5FA', display: 'flex', alignItems: 'center', gap: '4px', fontWeight: 700 }}>
+                  <Monitor size={14} /> Desktop (Fluid Width)
+                </span>
+                <span style={{ color: '#38BDF8', display: 'flex', alignItems: 'center', gap: '4px', fontWeight: 700 }}>
+                  <Smartphone size={14} /> Mobile (390px iPhone)
+                </span>
+              </div>
+            </div>
+
+            {/* Two Column Layout: Left Desktop Scaled Frame + Right Mobile Device Frame */}
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'minmax(0, 1.4fr) minmax(420px, 0.75fr)',
+                gap: '32px',
+                alignItems: 'start',
+              }}
+            >
+              {/* Left Desktop Panel */}
+              <div
+                style={{
+                  background: '#0B0F19',
+                  border: '1px solid rgba(59, 130, 246, 0.3)',
+                  borderRadius: '16px',
+                  overflow: 'hidden',
+                  boxShadow: '0 20px 50px rgba(0,0,0,0.7)',
+                }}
+              >
+                <div
+                  style={{
+                    background: '#1E293B',
+                    padding: '10px 18px',
+                    borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', fontWeight: 700, color: '#93C5FD' }}>
+                    <Monitor size={14} />
+                    <span>DESKTOP BROWSER VIEW (100% FLUID)</span>
+                  </div>
+                  <div style={{ display: 'flex', gap: '6px' }}>
+                    <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#EF4444' }} />
+                    <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#F59E0B' }} />
+                    <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#10B981' }} />
+                  </div>
+                </div>
+
+                <div style={{ maxHeight: '900px', overflowY: 'auto' }}>
+                  <DemoViewportProvider forcedViewport="desktop">
+                    {renderDesign()}
+                  </DemoViewportProvider>
+                </div>
+              </div>
+
+              {/* Right Mobile Panel (Realistic iPhone Frame) */}
+              <div style={{ position: 'sticky', top: '100px' }}>
+                <MobileDeviceFrame title={`Mobile Preview (Option #${currentOption})`}>
+                  {renderDesign()}
+                </MobileDeviceFrame>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
 
       {/* Architectural Specs Drawer */}

@@ -1,223 +1,236 @@
 'use client'
 
 import React, { useState } from 'react'
-import {
-  TrendingUp,
-  Truck,
-  Building2,
-  DollarSign,
-  ShieldCheck,
-  MapPin,
-  ChevronRight,
-  Calculator,
-  FileSpreadsheet
-} from 'lucide-react'
+import Image from 'next/image'
+import { CheckCircle2, Shield, Truck, Package, ArrowRight, DollarSign, Wrench } from 'lucide-react'
 import { DEMO_PRODUCTS } from '../demoData'
+import { useDemoViewport } from '../DemoViewportContext'
 
-export default function FleetCommanderHome({ onExploreShop }: { onExploreShop?: () => void }) {
-  const [fleetSize, setFleetSize] = useState<number>(25)
-  const estimatedSavings = fleetSize * 4800 // average animal collision downtime cost saved per truck
+export default function OwnerOperatorProHome({ onExploreShop }: { onExploreShop?: () => void }) {
+  const [truckQty, setTruckQty] = useState<1 | 2 | 3>(1)
+  const { isMobile } = useDemoViewport()
+
+  const discountPerGuard = truckQty === 1 ? 0 : truckQty === 2 ? 150 : 225
 
   return (
     <div
       style={{
-        background: '#081412',
+        background: '#061A14',
         color: '#E2E8F0',
-        fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+        fontFamily: '"Plus Jakarta Sans", "Inter", sans-serif',
         minHeight: '100vh',
-        padding: '50px 24px 100px',
+        padding: isMobile ? '24px 16px 60px' : '50px 24px 100px',
       }}
     >
-      <div style={{ maxWidth: '1360px', margin: '0 auto' }}>
-        {/* Top Enterprise Command Header */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(16, 185, 129, 0.25)', paddingBottom: '20px', marginBottom: '40px', flexWrap: 'wrap', gap: '16px' }}>
+      <div style={{ maxWidth: '1320px', margin: '0 auto' }}>
+        {/* Banner */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(16, 185, 129, 0.3)', paddingBottom: '16px', marginBottom: '32px', flexWrap: 'wrap', gap: '12px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#10B981', boxShadow: '0 0 10px #10B981' }} />
-            <span style={{ fontSize: '12px', fontWeight: 700, color: '#10B981', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-              FLEET COMMANDER B2B PROCUREMENT NETWORK // US DOT COMPLIANT
+            <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#10B981', boxShadow: '0 0 10px #10B981' }} />
+            <span style={{ fontSize: '11px', fontWeight: 800, color: '#10B981', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+              OWNER-OPERATOR & 1–3 TRUCK FLEET PROGRAM
             </span>
           </div>
-
-          <div style={{ fontSize: '12px', color: '#94A3B8' }}>
-            Nationwide Depot Fulfillment: <strong style={{ color: '#10B981' }}>ONLINE (99.4% In-Stock)</strong>
+          <div style={{ fontSize: '11px', color: '#A7F3D0' }}>
+            Free Freight to Any Commercial Address or Truck Stop Across USA
           </div>
         </div>
 
         {/* Hero Section */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.2fr) minmax(0, 0.8fr)', gap: '48px', alignItems: 'center', marginBottom: '60px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'minmax(0, 1.15fr) minmax(0, 0.85fr)', gap: isMobile ? '24px' : '40px', alignItems: 'center', marginBottom: isMobile ? '36px' : '64px' }}>
           <div>
-            <div style={{ fontSize: '13px', fontWeight: 700, color: '#10B981', textTransform: 'uppercase', marginBottom: '12px' }}>
-              Commercial Fleet Asset Protection
+            <div style={{ fontSize: '13px', fontWeight: 800, color: '#10B981', textTransform: 'uppercase', marginBottom: '12px' }}>
+              Outfit Your Rig with Zero Downtime Risk
             </div>
 
-            <h1 style={{ fontSize: 'clamp(2.4rem, 5vw, 4.2rem)', fontWeight: 800, color: '#FFFFFF', lineHeight: 1.05, letterSpacing: '-0.02em', marginBottom: '20px' }}>
-              ELIMINATE TOWING & <br />
-              <span style={{ color: '#10B981' }}>COLLISION DOWNTIME.</span>
+            <h1 style={{ fontSize: 'clamp(2.4rem, 5vw, 4rem)', fontWeight: 900, lineHeight: 1.05, color: '#FFFFFF', letterSpacing: '-0.02em', marginBottom: '20px' }}>
+              Complete Driver Bundles: <br />
+              <span style={{ color: '#10B981' }}>Guard + Brackets + Free Freight.</span>
             </h1>
 
-            <p style={{ fontSize: '16px', lineHeight: 1.6, color: '#94A3B8', maxWidth: '560px', marginBottom: '32px' }}>
-              The #1 standardized front-end protection program for national freight carriers. Guaranteed DOT clearance, CAS radar alignment, and Net-30 enterprise invoicing for fleets of 10 to 5,000+ power units.
+            <p style={{ fontSize: '16px', lineHeight: 1.6, color: '#94A3B8', maxWidth: '560px', marginBottom: '28px' }}>
+              Whether you're an independent driver running your own Cascadia or managing 2 to 3 power units, get our turnkey complete package: deer guard, custom no-drill chassis brackets, and Grade-8 hardware.
             </p>
 
-            <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', marginBottom: '40px' }}>
-              <button
-                onClick={onExploreShop}
-                style={{
-                  padding: '14px 28px',
-                  background: '#10B981',
-                  color: '#062016',
-                  fontWeight: 800,
-                  fontSize: '13px',
-                  border: 'none',
-                  borderRadius: '6px',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                }}
-              >
-                <span>OPEN B2B ORDER MATRIX</span>
-                <ChevronRight size={16} />
-              </button>
+            {/* Interactive 1 to 3 Truck Bundle Calculator */}
+            <div
+              style={{
+                background: '#0B2920',
+                border: '2px solid rgba(16, 185, 129, 0.4)',
+                borderRadius: '14px',
+                padding: '24px',
+                boxShadow: '0 12px 30px rgba(0,0,0,0.6)',
+                marginBottom: '28px',
+              }}
+            >
+              <div style={{ fontSize: '13px', fontWeight: 800, color: '#A7F3D0', textTransform: 'uppercase', marginBottom: '12px' }}>
+                How Many Trucks Are You Outfitting?
+              </div>
 
-              <button
-                style={{
-                  padding: '14px 24px',
-                  background: 'rgba(16, 185, 129, 0.1)',
-                  color: '#10B981',
-                  border: '1px solid rgba(16, 185, 129, 0.4)',
-                  fontWeight: 700,
-                  fontSize: '13px',
-                  borderRadius: '6px',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                }}
-              >
-                <FileSpreadsheet size={16} />
-                <span>REQUEST BULK RFQ</span>
-              </button>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px', marginBottom: '16px' }}>
+                {[
+                  { qty: 1, label: '1 Truck (Solo Rig)', discount: 'Standard Best Price' },
+                  { qty: 2, label: '2 Trucks (Save $300)', discount: 'Save $150 / Guard' },
+                  { qty: 3, label: '3 Trucks (Save $675)', discount: 'Save $225 / Guard' },
+                ].map((b) => (
+                  <button
+                    key={b.qty}
+                    onClick={() => setTruckQty(b.qty as any)}
+                    style={{
+                      background: truckQty === b.qty ? '#10B981' : '#061A14',
+                      color: truckQty === b.qty ? '#061A14' : '#E2E8F0',
+                      border: '1px solid rgba(16, 185, 129, 0.4)',
+                      borderRadius: '8px',
+                      padding: '12px 10px',
+                      cursor: 'pointer',
+                      textAlign: 'center',
+                    }}
+                  >
+                    <div style={{ fontWeight: 800, fontSize: '13px' }}>{b.label}</div>
+                    <div style={{ fontSize: '11px', marginTop: '2px', opacity: 0.8 }}>{b.discount}</div>
+                  </button>
+                ))}
+              </div>
+
+              <div style={{ background: '#04120E', padding: '14px', borderRadius: '8px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div>
+                  <div style={{ fontSize: '11px', color: '#6EE7B7' }}>Complete Kit per Truck (Guard + Brackets + Free Delivery):</div>
+                  <div style={{ fontSize: '20px', fontWeight: 900, color: '#FFF' }}>
+                    ${(2199 - discountPerGuard).toLocaleString()} / truck
+                  </div>
+                </div>
+                <button
+                  onClick={onExploreShop}
+                  style={{
+                    background: '#10B981',
+                    color: '#061A14',
+                    fontWeight: 900,
+                    fontSize: '13px',
+                    padding: '12px 20px',
+                    borderRadius: '8px',
+                    border: 'none',
+                    cursor: 'pointer',
+                  }}
+                >
+                  Order {truckQty} Truck Bundle →
+                </button>
+              </div>
             </div>
 
-            {/* Enterprise KPIs */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '24px' }}>
-              <div>
-                <div style={{ fontSize: '11px', color: '#64748B' }}>UNITS IN SERVICE</div>
-                <div style={{ fontSize: '24px', fontWeight: 800, color: '#FFF' }}>14,200+</div>
-                <div style={{ fontSize: '11px', color: '#10B981' }}>Across 180+ Fleets</div>
+            <div style={{ display: 'flex', gap: '20px', fontSize: '13px', color: '#A7F3D0' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Wrench size={16} />
+                <span>25-Minute Easy Bolt-On</span>
               </div>
-              <div>
-                <div style={{ fontSize: '11px', color: '#64748B' }}>EST. DOWNTIME AVOIDED</div>
-                <div style={{ fontSize: '24px', fontWeight: 800, color: '#10B981' }}>$14.8M</div>
-                <div style={{ fontSize: '11px', color: '#64748B' }}>2025 Calendar Year</div>
-              </div>
-              <div>
-                <div style={{ fontSize: '11px', color: '#64748B' }}>REGIONAL DEPOTS</div>
-                <div style={{ fontSize: '24px', fontWeight: 800, color: '#FFF' }}>5 Hubs</div>
-                <div style={{ fontSize: '11px', color: '#64748B' }}>Next-Day Freight</div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Package size={16} />
+                <span>Palletized Freight with Tracking</span>
               </div>
             </div>
           </div>
 
-          {/* Interactive Fleet ROI Calculator Widget */}
+          {/* Real Photo Card */}
           <div
             style={{
-              background: '#0B1D1A',
-              border: '1px solid rgba(16, 185, 129, 0.35)',
-              borderRadius: '12px',
-              padding: '32px',
-              boxShadow: '0 12px 40px rgba(0,0,0,0.6)',
+              position: 'relative',
+              borderRadius: '16px',
+              overflow: 'hidden',
+              boxShadow: '0 20px 50px rgba(0,0,0,0.8), 0 0 0 1px rgba(16, 185, 129, 0.3)',
+              aspectRatio: '4/3',
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#10B981', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', marginBottom: '20px' }}>
-              <Calculator size={18} />
-              <span>FLEET LOSS PREVENTION CALCULATOR</span>
-            </div>
-
-            <div style={{ marginBottom: '24px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', fontSize: '13px' }}>
-                <span style={{ color: '#CBD5E1' }}>Active Power Units in Fleet:</span>
-                <span style={{ fontWeight: 800, color: '#10B981', fontSize: '16px' }}>{fleetSize} Trucks</span>
-              </div>
-              <input
-                type="range"
-                min={5}
-                max={200}
-                step={5}
-                value={fleetSize}
-                onChange={(e) => setFleetSize(Number(e.target.value))}
-                style={{ width: '100%', accentColor: '#10B981', cursor: 'pointer' }}
-              />
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px', color: '#64748B', marginTop: '4px' }}>
-                <span>5 Trucks</span>
-                <span>50 Trucks</span>
-                <span>100 Trucks</span>
-                <span>200+ Trucks</span>
-              </div>
-            </div>
-
-            <div style={{ background: '#05120F', padding: '20px', borderRadius: '8px', border: '1px solid rgba(16, 185, 129, 0.2)', marginBottom: '24px' }}>
-              <div style={{ fontSize: '11px', color: '#94A3B8', textTransform: 'uppercase', marginBottom: '4px' }}>
-                Estimated Annual Downtime Avoidance
-              </div>
-              <div style={{ fontSize: '32px', fontWeight: 800, color: '#10B981' }}>
-                ${estimatedSavings.toLocaleString()}
-              </div>
-              <div style={{ fontSize: '11px', color: '#64748B', marginTop: '6px' }}>
-                Based on ATA benchmark: $4,800 avg tow + radiator + 4.2 days lost freight per strike.
-              </div>
-            </div>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '24px', fontSize: '12px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#CBD5E1' }}>
-                <ShieldCheck size={16} color="#10B981" />
-                <span>Tiered Volume Pricing: <strong>Up to 28% Enterprise Rebate</strong></span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#CBD5E1' }}>
-                <Building2 size={16} color="#10B981" />
-                <span>Direct Drop-Ship to Any Terminal or Maintenance Bay</span>
-              </div>
-            </div>
-
-            <button
-              onClick={onExploreShop}
+            <Image
+              src="/images/guards/guard-freightliner-cascadia.jpg"
+              alt="Freightliner Cascadia with Road Armor deer guard at truck stop"
+              fill
+              style={{ objectFit: 'cover' }}
+              priority
+            />
+            <div
               style={{
-                width: '100%',
-                padding: '14px',
-                background: '#10B981',
-                color: '#062016',
-                fontWeight: 800,
-                fontSize: '13px',
-                borderRadius: '6px',
-                border: 'none',
-                cursor: 'pointer',
+                position: 'absolute',
+                bottom: '16px',
+                left: '16px',
+                right: '16px',
+                background: 'rgba(6, 26, 20, 0.9)',
+                backdropFilter: 'blur(10px)',
+                borderRadius: '10px',
+                padding: '12px 16px',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                border: '1px solid rgba(16, 185, 129, 0.3)',
               }}
             >
-              ORDER FOR {fleetSize} TRUCKS WITH VOLUME DISCOUNT
-            </button>
+              <div>
+                <div style={{ fontSize: '14px', fontWeight: 800, color: '#FFF' }}>
+                  Titan Pro Sentinel — Cascadia
+                </div>
+                <div style={{ fontSize: '11px', color: '#A7F3D0' }}>
+                  Full Hood & Radar Protection • In Stock at Dallas Hub
+                </div>
+              </div>
+              <div style={{ fontSize: '20px', fontWeight: 900, color: '#10B981' }}>
+                $2,349
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Depot Location Network */}
-        <div style={{ background: '#0B1D1A', border: '1px solid rgba(16, 185, 129, 0.25)', borderRadius: '10px', padding: '24px' }}>
-          <div style={{ fontSize: '12px', fontWeight: 700, color: '#10B981', textTransform: 'uppercase', marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <MapPin size={16} />
-            <span>NATIONWIDE DISTRIBUTION HUBS (READY FOR FREIGHT DISPATCH)</span>
-          </div>
+        {/* Product Grid */}
+        <div>
+          <h2 style={{ fontSize: '24px', fontWeight: 900, color: '#FFF', marginBottom: '24px' }}>
+            Popular Owner-Operator Rig Packages
+          </h2>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
-            {[
-              { city: 'Dallas / Fort Worth, TX', stock: '142 Units', transit: 'Next Day South/Central' },
-              { city: 'Chicago, IL', stock: '210 Units', transit: 'Next Day Midwest' },
-              { city: 'Atlanta, GA', stock: '128 Units', transit: 'Next Day Southeast' },
-              { city: 'Reno, NV', stock: '96 Units', transit: 'Next Day West Coast' },
-              { city: 'Scranton, PA', stock: '115 Units', transit: 'Next Day Northeast' },
-            ].map((hub) => (
-              <div key={hub.city} style={{ background: '#05120F', padding: '14px', borderRadius: '6px', border: '1px solid rgba(16, 185, 129, 0.15)' }}>
-                <div style={{ fontWeight: 700, fontSize: '13px', color: '#FFF', marginBottom: '4px' }}>{hub.city}</div>
-                <div style={{ fontSize: '11px', color: '#10B981', fontWeight: 600 }}>In-Stock: {hub.stock}</div>
-                <div style={{ fontSize: '10px', color: '#64748B' }}>{hub.transit}</div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px' }}>
+            {DEMO_PRODUCTS.slice(0, 3).map((prod) => (
+              <div
+                key={prod.id}
+                style={{
+                  background: '#0B2920',
+                  border: '1px solid rgba(16, 185, 129, 0.25)',
+                  borderRadius: '12px',
+                  overflow: 'hidden',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
+                <div style={{ position: 'relative', width: '100%', height: '220px' }}>
+                  <Image src={prod.image} alt={prod.name} fill style={{ objectFit: 'cover' }} />
+                </div>
+                <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', flex: 1 }}>
+                  <div style={{ fontSize: '11px', color: '#10B981', fontWeight: 800, textTransform: 'uppercase', marginBottom: '4px' }}>
+                    {prod.truck} Rig Fitting
+                  </div>
+                  <h3 style={{ fontSize: '17px', fontWeight: 800, color: '#FFF', margin: '0 0 6px 0' }}>
+                    {prod.name}
+                  </h3>
+                  <div style={{ fontSize: '12px', color: '#A7F3D0', marginBottom: '14px' }}>
+                    Brackets & Hardware Included • {prod.stockCount} in stock
+                  </div>
+
+                  <div style={{ marginTop: 'auto', borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ fontSize: '22px', fontWeight: 900, color: '#10B981' }}>
+                      ${prod.price.toLocaleString()}
+                    </span>
+                    <button
+                      onClick={onExploreShop}
+                      style={{
+                        background: '#10B981',
+                        color: '#061A14',
+                        fontWeight: 800,
+                        fontSize: '12px',
+                        padding: '10px 18px',
+                        borderRadius: '6px',
+                        border: 'none',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      Buy Package
+                    </button>
+                  </div>
+                </div>
               </div>
             ))}
           </div>

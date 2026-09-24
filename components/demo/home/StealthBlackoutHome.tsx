@@ -1,10 +1,13 @@
 'use client'
 
 import React, { useState } from 'react'
+import Image from 'next/image'
 import { Sparkles, ArrowRight, Shield, Moon } from 'lucide-react'
 import { DEMO_PRODUCTS } from '../demoData'
+import { useDemoViewport } from '../DemoViewportContext'
 
 export default function StealthBlackoutHome({ onExploreShop }: { onExploreShop?: () => void }) {
+  const { isMobile } = useDemoViewport()
   const [finish, setFinish] = useState<'Matte' | 'Satin' | 'Gloss'>('Satin')
 
   return (
@@ -14,7 +17,7 @@ export default function StealthBlackoutHome({ onExploreShop }: { onExploreShop?:
         color: '#F3E8FF',
         fontFamily: '"Montserrat", "Inter", -apple-system, sans-serif',
         minHeight: '100vh',
-        padding: '60px 24px 100px',
+        padding: isMobile ? '20px 14px 60px' : '60px 24px 100px',
         position: 'relative',
         overflow: 'hidden',
       }}
@@ -117,7 +120,7 @@ export default function StealthBlackoutHome({ onExploreShop }: { onExploreShop?:
         </div>
 
         {/* Selected Stealth Builds */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '32px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(300px, 1fr))', gap: '32px' }}>
           {DEMO_PRODUCTS.slice(0, 3).map((prod) => (
             <div
               key={prod.id}
@@ -132,6 +135,12 @@ export default function StealthBlackoutHome({ onExploreShop }: { onExploreShop?:
                 boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
               }}
             >
+              <div style={{ position: 'relative', width: '100%', height: '140px', borderRadius: '8px', overflow: 'hidden', background: '#050508', border: '1px solid rgba(168, 85, 247, 0.25)' }}>
+                <Image src={prod.image} alt={prod.name} fill sizes="300px" style={{ objectFit: 'cover' }} />
+                <div style={{ position: 'absolute', top: '6px', left: '6px', background: 'rgba(5, 5, 8, 0.85)', padding: '2px 6px', fontSize: '9px', color: '#C084FC', fontWeight: 800 }}>
+                  {prod.truck.toUpperCase()}
+                </div>
+              </div>
               <div style={{ fontSize: '11px', color: '#A855F7', fontWeight: 800, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
                 {prod.truck} // {finish.toUpperCase()} SPECIALTY
               </div>

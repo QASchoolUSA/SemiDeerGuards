@@ -1,11 +1,11 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
 import {
   Monitor,
-  Tablet,
   Smartphone,
+  Columns,
   Layers,
   ChevronLeft,
   ChevronRight,
@@ -15,17 +15,21 @@ import {
   Home,
   ShoppingBag,
   Sparkles,
-  ExternalLink
+  ExternalLink,
+  QrCode,
 } from 'lucide-react'
-import { ARCHETYPES, DesignArchetype } from './demoData'
+import { ARCHETYPES } from './demoData'
+import MobileQrModal from './MobileQrModal'
+
+export type ViewportMode = 'desktop' | 'mobile' | 'side-by-side'
 
 interface DemoStudioNavProps {
   currentOption: number
   setCurrentOption: (id: number) => void
   viewMode: 'home' | 'shop'
   setViewMode: (mode: 'home' | 'shop') => void
-  viewport: 'desktop' | 'tablet' | 'mobile'
-  setViewport: (vp: 'desktop' | 'tablet' | 'mobile') => void
+  viewport: ViewportMode
+  setViewport: (vp: ViewportMode) => void
   isFullscreen: boolean
   setIsFullscreen: (fs: boolean) => void
   isInfoOpen: boolean
@@ -42,8 +46,9 @@ export default function DemoStudioNav({
   isFullscreen,
   setIsFullscreen,
   isInfoOpen,
-  setIsInfoOpen
+  setIsInfoOpen,
 }: DemoStudioNavProps) {
+  const [isQrOpen, setIsQrOpen] = useState(false)
   const activeArchetype = ARCHETYPES.find((a) => a.id === currentOption) || ARCHETYPES[0]
 
   const handlePrev = () => {
@@ -79,14 +84,14 @@ export default function DemoStudioNav({
           flexWrap: 'wrap',
         }}
       >
-        {/* Left: Studio Branding & Active Option Summary */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+        {/* Left: Studio Branding & Active Option Selector */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
-              padding: '4px 10px',
+              padding: '5px 12px',
               background: 'linear-gradient(135deg, rgba(74,158,255,0.18), rgba(139,92,246,0.18))',
               borderRadius: '8px',
               border: '1px solid rgba(74,158,255,0.3)',
@@ -123,8 +128,6 @@ export default function DemoStudioNav({
                 alignItems: 'center',
                 transition: 'all 0.15s ease',
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.14)')}
-              onMouseLeave={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.06)')}
             >
               <ChevronLeft size={16} />
             </button>
@@ -183,127 +186,164 @@ export default function DemoStudioNav({
                 alignItems: 'center',
                 transition: 'all 0.15s ease',
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.14)')}
-              onMouseLeave={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.06)')}
             >
               <ChevronRight size={16} />
             </button>
           </div>
         </div>
 
-        {/* Center: Page Mode Switcher (Home vs. Shop) */}
-        <div
-          style={{
-            display: 'flex',
-            background: 'rgba(15, 23, 42, 0.9)',
-            padding: '3px',
-            borderRadius: '10px',
-            border: '1px solid rgba(255,255,255,0.12)',
-          }}
-        >
-          <button
-            onClick={() => setViewMode('home')}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '6px 14px',
-              borderRadius: '7px',
-              fontSize: '12px',
-              fontWeight: 700,
-              cursor: 'pointer',
-              border: 'none',
-              transition: 'all 0.2s ease',
-              background: viewMode === 'home' ? activeArchetype.accentColor : 'transparent',
-              color: viewMode === 'home' ? '#060A12' : '#94A3B8',
-            }}
-          >
-            <Home size={14} />
-            Homepage Mode
-          </button>
-
-          <button
-            onClick={() => setViewMode('shop')}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '6px 14px',
-              borderRadius: '7px',
-              fontSize: '12px',
-              fontWeight: 700,
-              cursor: 'pointer',
-              border: 'none',
-              transition: 'all 0.2s ease',
-              background: viewMode === 'shop' ? activeArchetype.accentColor : 'transparent',
-              color: viewMode === 'shop' ? '#060A12' : '#94A3B8',
-            }}
-          >
-            <ShoppingBag size={14} />
-            Shop / Catalog Mode
-          </button>
-        </div>
-
-        {/* Right: Viewport Controls & Design Specs Button */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          {/* Device viewport frame selector */}
+        {/* Center: PROMINENT DEVICE MODE SWITCHER (Desktop vs. Mobile vs. Side-by-Side) */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          {/* Device Segmented Control */}
           <div
             style={{
               display: 'flex',
-              alignItems: 'center',
-              background: 'rgba(255,255,255,0.05)',
-              borderRadius: '8px',
-              padding: '2px',
-              border: '1px solid rgba(255,255,255,0.08)',
+              background: 'rgba(15, 23, 42, 0.95)',
+              padding: '3px',
+              borderRadius: '10px',
+              border: '1px solid rgba(56, 189, 248, 0.3)',
+              boxShadow: '0 4px 14px rgba(0,0,0,0.5)',
             }}
           >
             <button
               onClick={() => setViewport('desktop')}
-              title="Desktop 100%"
               style={{
-                padding: '6px 9px',
-                borderRadius: '6px',
-                background: viewport === 'desktop' ? 'rgba(255,255,255,0.18)' : 'transparent',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '6px 14px',
+                borderRadius: '7px',
+                fontSize: '12px',
+                fontWeight: 800,
+                cursor: 'pointer',
+                border: 'none',
+                transition: 'all 0.15s ease',
+                background: viewport === 'desktop' ? '#2563EB' : 'transparent',
                 color: viewport === 'desktop' ? '#FFFFFF' : '#94A3B8',
-                border: 'none',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
               }}
             >
-              <Monitor size={15} />
+              <Monitor size={14} />
+              <span>Desktop View</span>
             </button>
-            <button
-              onClick={() => setViewport('tablet')}
-              title="Tablet (768px frame)"
-              style={{
-                padding: '6px 9px',
-                borderRadius: '6px',
-                background: viewport === 'tablet' ? 'rgba(255,255,255,0.18)' : 'transparent',
-                color: viewport === 'tablet' ? '#FFFFFF' : '#94A3B8',
-                border: 'none',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
-              <Tablet size={15} />
-            </button>
+
             <button
               onClick={() => setViewport('mobile')}
-              title="Mobile (390px frame)"
               style={{
-                padding: '6px 9px',
-                borderRadius: '6px',
-                background: viewport === 'mobile' ? 'rgba(255,255,255,0.18)' : 'transparent',
-                color: viewport === 'mobile' ? '#FFFFFF' : '#94A3B8',
-                border: 'none',
-                cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
+                gap: '6px',
+                padding: '6px 14px',
+                borderRadius: '7px',
+                fontSize: '12px',
+                fontWeight: 800,
+                cursor: 'pointer',
+                border: 'none',
+                transition: 'all 0.15s ease',
+                background: viewport === 'mobile' ? '#0284C7' : 'transparent',
+                color: viewport === 'mobile' ? '#FFFFFF' : '#94A3B8',
               }}
             >
-              <Smartphone size={15} />
+              <Smartphone size={14} />
+              <span>Mobile Phone View</span>
+            </button>
+
+            <button
+              onClick={() => setViewport('side-by-side')}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '6px 14px',
+                borderRadius: '7px',
+                fontSize: '12px',
+                fontWeight: 800,
+                cursor: 'pointer',
+                border: 'none',
+                transition: 'all 0.15s ease',
+                background: viewport === 'side-by-side' ? '#7C3AED' : 'transparent',
+                color: viewport === 'side-by-side' ? '#FFFFFF' : '#94A3B8',
+              }}
+            >
+              <Columns size={14} />
+              <span>Desktop + Mobile Side-by-Side</span>
+            </button>
+          </div>
+
+          {/* Test on Physical Phone Modal trigger */}
+          <button
+            onClick={() => setIsQrOpen(true)}
+            title="Scan QR to open on your phone or launch popup"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '6px 12px',
+              background: 'rgba(255,255,255,0.06)',
+              border: '1px solid rgba(255,255,255,0.12)',
+              borderRadius: '8px',
+              color: '#38BDF8',
+              fontSize: '12px',
+              fontWeight: 700,
+              cursor: 'pointer',
+            }}
+          >
+            <QrCode size={14} />
+            <span>QR / Phone Pop-up</span>
+          </button>
+        </div>
+
+        {/* Right: Page Mode (Home/Shop) & Utility Buttons */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          {/* Home vs. Shop Toggle */}
+          <div
+            style={{
+              display: 'flex',
+              background: 'rgba(15, 23, 42, 0.9)',
+              padding: '3px',
+              borderRadius: '10px',
+              border: '1px solid rgba(255,255,255,0.12)',
+            }}
+          >
+            <button
+              onClick={() => setViewMode('home')}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '6px 12px',
+                borderRadius: '7px',
+                fontSize: '12px',
+                fontWeight: 700,
+                cursor: 'pointer',
+                border: 'none',
+                transition: 'all 0.2s ease',
+                background: viewMode === 'home' ? activeArchetype.accentColor : 'transparent',
+                color: viewMode === 'home' ? '#060A12' : '#94A3B8',
+              }}
+            >
+              <Home size={14} />
+              <span>Homepage</span>
+            </button>
+
+            <button
+              onClick={() => setViewMode('shop')}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '6px 12px',
+                borderRadius: '7px',
+                fontSize: '12px',
+                fontWeight: 700,
+                cursor: 'pointer',
+                border: 'none',
+                transition: 'all 0.2s ease',
+                background: viewMode === 'shop' ? activeArchetype.accentColor : 'transparent',
+                color: viewMode === 'shop' ? '#060A12' : '#94A3B8',
+              }}
+            >
+              <ShoppingBag size={14} />
+              <span>Shop</span>
             </button>
           </div>
 
@@ -364,14 +404,6 @@ export default function DemoStudioNav({
               textDecoration: 'none',
               transition: 'all 0.15s ease',
             }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.color = '#F1F5F9'
-              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)'
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.color = '#94A3B8'
-              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'
-            }}
           >
             <span>Live Site</span>
             <ExternalLink size={12} />
@@ -431,20 +463,6 @@ export default function DemoStudioNav({
                   : '1px solid rgba(255,255,255,0.07)',
                 boxShadow: isSelected ? `0 0 14px ${arch.accentColor}33` : 'none',
               }}
-              onMouseEnter={(e) => {
-                if (!isSelected) {
-                  e.currentTarget.style.color = '#F1F5F9'
-                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)'
-                  e.currentTarget.style.background = 'rgba(255,255,255,0.06)'
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!isSelected) {
-                  e.currentTarget.style.color = '#94A3B8'
-                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)'
-                  e.currentTarget.style.background = 'rgba(255,255,255,0.03)'
-                }
-              }}
             >
               <span
                 style={{
@@ -467,6 +485,14 @@ export default function DemoStudioNav({
           )
         })}
       </div>
+
+      {/* QR Code / Phone Pop-up Modal */}
+      <MobileQrModal
+        isOpen={isQrOpen}
+        onClose={() => setIsQrOpen(false)}
+        currentOption={currentOption}
+        viewMode={viewMode}
+      />
     </header>
   )
 }

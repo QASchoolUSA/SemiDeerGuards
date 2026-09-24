@@ -1,10 +1,13 @@
 'use client'
 
 import React, { useState } from 'react'
+import Image from 'next/image'
 import { Terminal, Search, Command, ArrowRight, Check, Zap } from 'lucide-react'
 import { DEMO_PRODUCTS } from '../demoData'
+import { useDemoViewport } from '../DemoViewportContext'
 
 export default function SpeedTerminalHome({ onExploreShop }: { onExploreShop?: () => void }) {
+  const { isMobile } = useDemoViewport()
   const [query, setQuery] = useState('')
 
   const filtered = query.trim() === ''
@@ -22,7 +25,7 @@ export default function SpeedTerminalHome({ onExploreShop }: { onExploreShop?: (
         color: '#E0F2FE',
         fontFamily: '"Fira Code", "Geist Mono", monospace',
         minHeight: '100vh',
-        padding: '60px 24px 100px',
+        padding: isMobile ? '20px 14px 60px' : '60px 24px 100px',
       }}
     >
       <div style={{ maxWidth: '1080px', margin: '0 auto' }}>
@@ -108,10 +111,12 @@ export default function SpeedTerminalHome({ onExploreShop }: { onExploreShop?: (
                   background: '#0F172A',
                   border: '1px solid rgba(255,255,255,0.08)',
                   borderRadius: '8px',
-                  padding: '16px 20px',
+                  padding: isMobile ? '14px' : '16px 20px',
                   display: 'flex',
-                  alignItems: 'center',
+                  flexDirection: isMobile ? 'column' : 'row',
+                  alignItems: isMobile ? 'flex-start' : 'center',
                   justifyContent: 'space-between',
+                  gap: isMobile ? '14px' : '0',
                   cursor: 'pointer',
                   transition: 'all 0.15s ease',
                 }}
@@ -124,16 +129,19 @@ export default function SpeedTerminalHome({ onExploreShop }: { onExploreShop?: (
                   e.currentTarget.style.background = '#0F172A'
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '14px', width: isMobile ? '100%' : 'auto' }}>
                   <span style={{ color: '#64748B', fontSize: '12px', width: '20px' }}>0{idx + 1}</span>
+                  <div style={{ position: 'relative', width: '48px', height: '36px', borderRadius: '4px', overflow: 'hidden', border: '1px solid rgba(56, 189, 248, 0.3)', background: '#020617', flexShrink: 0 }}>
+                    <Image src={prod.image} alt={prod.name} fill sizes="48px" style={{ objectFit: 'cover' }} />
+                  </div>
                   <div>
                     <div style={{ fontWeight: 700, color: '#FFF', fontSize: '14px' }}>{prod.name}</div>
                     <div style={{ fontSize: '11px', color: '#94A3B8' }}>{prod.truck} {prod.model} // SKU: {prod.id}</div>
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
-                  <div style={{ textAlign: 'right', fontSize: '11px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: isMobile ? 'space-between' : 'flex-end', width: isMobile ? '100%' : 'auto', gap: '20px', borderTop: isMobile ? '1px solid rgba(255,255,255,0.06)' : 'none', paddingTop: isMobile ? '10px' : 0 }}>
+                  <div style={{ textAlign: isMobile ? 'left' : 'right', fontSize: '11px' }}>
                     <div style={{ color: prod.inStock ? '#22C55E' : '#EF4444' }}>
                       {prod.inStock ? `${prod.stockCount} in stock` : 'backordered'}
                     </div>

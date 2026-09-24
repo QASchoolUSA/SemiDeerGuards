@@ -1,16 +1,20 @@
 'use client'
 
 import React, { useState } from 'react'
-import { Download, Sliders, CheckCircle2, AlertTriangle, Layers, Filter, Eye } from 'lucide-react'
+import Image from 'next/image'
+import { Download, Sliders, CheckCircle2, AlertTriangle, Layers, Filter, Eye, ShoppingCart } from 'lucide-react'
 import { DEMO_PRODUCTS, DemoProduct } from '../demoData'
+import { useDemoViewport } from '../DemoViewportContext'
 
 export default function BlueprintShop() {
+  const { isMobile } = useDemoViewport()
   const [selectedBrand, setSelectedBrand] = useState('ALL')
   const [casOnly, setCasOnly] = useState(false)
-  const [selectedProduct, setSelectedProduct] = useState<DemoProduct | null>(DEMO_PRODUCTS[0])
+  const [selectedProduct, setSelectedProduct] = useState<DemoProduct>(DEMO_PRODUCTS[0])
   const [downloadSuccess, setDownloadSuccess] = useState<string | null>(null)
+  const [cartAdded, setCartAdded] = useState(false)
 
-  const brands = ['ALL', 'Volvo', 'Freightliner', 'Kenworth', 'Peterbilt', 'Mack', 'International']
+  const brands = ['ALL', 'Volvo', 'Freightliner', 'Kenworth', 'Peterbilt', 'Mack']
 
   const filtered = DEMO_PRODUCTS.filter((p) => {
     if (selectedBrand !== 'ALL' && p.truck !== selectedBrand) return false
@@ -23,6 +27,11 @@ export default function BlueprintShop() {
     setTimeout(() => setDownloadSuccess(null), 3000)
   }
 
+  const handleAdd = () => {
+    setCartAdded(true)
+    setTimeout(() => setCartAdded(false), 2500)
+  }
+
   return (
     <div
       style={{
@@ -31,7 +40,7 @@ export default function BlueprintShop() {
         fontFamily: 'ui-monospace, "JetBrains Mono", Menlo, Consolas, monospace',
         minHeight: '100vh',
         position: 'relative',
-        padding: '40px 24px 80px',
+        padding: '36px 20px 80px',
       }}
     >
       {/* Background blueprint grid */}
@@ -50,7 +59,7 @@ export default function BlueprintShop() {
 
       <div style={{ maxWidth: '1400px', margin: '0 auto', position: 'relative', zIndex: 10 }}>
         {/* Header & Matrix Controls */}
-        <div style={{ borderBottom: '1px solid rgba(0, 210, 255, 0.2)', paddingBottom: '24px', marginBottom: '32px' }}>
+        <div style={{ borderBottom: '1px solid rgba(0, 210, 255, 0.2)', paddingBottom: '20px', marginBottom: '28px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
             <div>
               <div style={{ fontSize: '11px', color: '#00D2FF', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
@@ -94,7 +103,7 @@ export default function BlueprintShop() {
                       background: selectedBrand === b ? '#00D2FF' : 'rgba(255,255,255,0.04)',
                       color: selectedBrand === b ? '#04101E' : '#8FBAD9',
                       border: '1px solid rgba(0, 210, 255, 0.2)',
-                      padding: '4px 10px',
+                      padding: '6px 12px',
                       fontSize: '11px',
                       cursor: 'pointer',
                       fontWeight: selectedBrand === b ? 700 : 500,
@@ -109,18 +118,18 @@ export default function BlueprintShop() {
         </div>
 
         {/* Two-Pane Matrix Layout: Left Spec Table, Right Live CAD Inspector */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.4fr) minmax(360px, 0.9fr)', gap: '32px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'minmax(0, 1.35fr) minmax(360px, 0.9fr)', gap: isMobile ? '20px' : '32px', alignItems: 'start' }}>
           {/* Engineering Data Table */}
-          <div style={{ background: 'rgba(6, 26, 48, 0.5)', border: '1px solid rgba(0, 210, 255, 0.25)', overflowX: 'auto' }}>
+          <div style={{ background: 'rgba(6, 26, 48, 0.5)', border: '1px solid rgba(0, 210, 255, 0.25)', overflowX: 'auto', borderRadius: '4px' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '12px' }}>
               <thead>
                 <tr style={{ background: 'rgba(0, 210, 255, 0.1)', borderBottom: '1px solid rgba(0, 210, 255, 0.3)', color: '#00D2FF' }}>
-                  <th style={{ padding: '12px 16px' }}>MAKE & MODEL</th>
-                  <th style={{ padding: '12px 16px' }}>ALLOY / GAUGE</th>
-                  <th style={{ padding: '12px 16px' }}>IMPACT (kJ)</th>
-                  <th style={{ padding: '12px 16px' }}>CAS CERT</th>
-                  <th style={{ padding: '12px 16px' }}>PRICE (USD)</th>
-                  <th style={{ padding: '12px 16px', textAlign: 'right' }}>ACTION</th>
+                  <th style={{ padding: '12px 14px' }}>VIEW</th>
+                  <th style={{ padding: '12px 14px' }}>MAKE & MODEL</th>
+                  <th style={{ padding: '12px 14px' }}>ALLOY / GAUGE</th>
+                  <th style={{ padding: '12px 14px' }}>IMPACT</th>
+                  <th style={{ padding: '12px 14px' }}>PRICE</th>
+                  <th style={{ padding: '12px 14px', textAlign: 'right' }}>DWG</th>
                 </tr>
               </thead>
               <tbody>
@@ -136,36 +145,24 @@ export default function BlueprintShop() {
                         cursor: 'pointer',
                         transition: 'background 0.15s ease',
                       }}
-                      onMouseEnter={(e) => {
-                        if (!isSelected) e.currentTarget.style.background = 'rgba(0, 210, 255, 0.06)'
-                      }}
-                      onMouseLeave={(e) => {
-                        if (!isSelected) e.currentTarget.style.background = 'transparent'
-                      }}
                     >
-                      <td style={{ padding: '14px 16px' }}>
+                      <td style={{ padding: '10px 14px' }}>
+                        <div style={{ position: 'relative', width: '48px', height: '36px', borderRadius: '3px', overflow: 'hidden', border: '1px solid rgba(0, 210, 255, 0.3)', background: '#020912' }}>
+                          <Image src={prod.image} alt={prod.name} fill sizes="48px" style={{ objectFit: 'cover' }} />
+                        </div>
+                      </td>
+                      <td style={{ padding: '12px 14px' }}>
                         <div style={{ fontWeight: 700, color: '#FFF' }}>{prod.truck} {prod.model}</div>
                         <div style={{ fontSize: '10px', color: '#688CA5' }}>{prod.name}</div>
                       </td>
-                      <td style={{ padding: '14px 16px', color: '#8FBAD9' }}>{prod.gauge}</td>
-                      <td style={{ padding: '14px 16px' }}>
+                      <td style={{ padding: '12px 14px', color: '#8FBAD9' }}>{prod.tubeDiameter}</td>
+                      <td style={{ padding: '12px 14px' }}>
                         <span style={{ color: '#00D2FF', fontWeight: 700 }}>{prod.impactRating.split(' ')[0]}</span>
                       </td>
-                      <td style={{ padding: '14px 16px' }}>
-                        {prod.casCompatible ? (
-                          <span style={{ color: '#22C55E', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '11px' }}>
-                            <CheckCircle2 size={13} /> 77GHz OK
-                          </span>
-                        ) : (
-                          <span style={{ color: '#EAB308', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '11px' }}>
-                            <AlertTriangle size={13} /> Standard
-                          </span>
-                        )}
-                      </td>
-                      <td style={{ padding: '14px 16px', fontWeight: 800, color: '#FFF' }}>
+                      <td style={{ padding: '12px 14px', fontWeight: 800, color: '#FFF' }}>
                         ${prod.price.toLocaleString()}
                       </td>
-                      <td style={{ padding: '14px 16px', textAlign: 'right' }}>
+                      <td style={{ padding: '12px 14px', textAlign: 'right' }}>
                         <button
                           onClick={(e) => {
                             e.stopPropagation()
@@ -175,12 +172,12 @@ export default function BlueprintShop() {
                             background: downloadSuccess === prod.id ? '#22C55E' : 'rgba(0, 210, 255, 0.1)',
                             border: '1px solid #00D2FF',
                             color: downloadSuccess === prod.id ? '#04101E' : '#00D2FF',
-                            padding: '5px 10px',
+                            padding: '4px 8px',
                             fontSize: '10px',
                             cursor: 'pointer',
                           }}
                         >
-                          {downloadSuccess === prod.id ? 'CAD READY' : 'STEP .DWG'}
+                          {downloadSuccess === prod.id ? 'CAD READY' : 'DWG'}
                         </button>
                       </td>
                     </tr>
@@ -190,85 +187,94 @@ export default function BlueprintShop() {
             </table>
           </div>
 
-          {/* Right Selected Spec Sheet & Telemetry Pane */}
+          {/* Right Selected Spec Sheet & Telemetry Pane with REAL IMAGE */}
           {selectedProduct && (
             <div
               style={{
-                background: 'rgba(6, 26, 48, 0.7)',
+                background: 'rgba(6, 26, 48, 0.85)',
                 border: '1px solid #00D2FF',
-                padding: '24px',
-                position: 'sticky',
-                top: '100px',
+                padding: isMobile ? '16px' : '24px',
+                position: isMobile ? 'relative' : 'sticky',
+                top: isMobile ? '0' : '24px',
                 boxShadow: '0 0 30px rgba(0, 210, 255, 0.15)',
               }}
             >
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
                 <span style={{ fontSize: '11px', color: '#00D2FF', textTransform: 'uppercase' }}>
                   ACTIVE FITMENT SPEC SHEET
                 </span>
-                <span style={{ fontSize: '10px', color: '#688CA5' }}>PART NO: {selectedProduct.id.toUpperCase()}</span>
+                <span style={{ fontSize: '10px', color: '#688CA5' }}>SKU: {selectedProduct.id.toUpperCase()}</span>
               </div>
 
-              <h2 style={{ fontSize: '20px', fontWeight: 800, color: '#FFF', margin: '0 0 6px 0' }}>
+              {/* Real Product Image Container */}
+              <div style={{ position: 'relative', width: '100%', height: '200px', border: '1px solid rgba(0, 210, 255, 0.4)', borderRadius: '4px', overflow: 'hidden', marginBottom: '16px', background: '#020912' }}>
+                <Image
+                  src={selectedProduct.image}
+                  alt={selectedProduct.name}
+                  fill
+                  sizes="400px"
+                  style={{ objectFit: 'cover' }}
+                />
+                <div style={{ position: 'absolute', top: '8px', left: '8px', background: 'rgba(4, 16, 30, 0.85)', border: '1px solid #00D2FF', color: '#00D2FF', padding: '2px 8px', fontSize: '10px', fontWeight: 700 }}>
+                  {selectedProduct.truck.toUpperCase()} CHASSIS MATCH
+                </div>
+              </div>
+
+              <h2 style={{ fontSize: '19px', fontWeight: 800, color: '#FFF', margin: '0 0 4px 0' }}>
                 {selectedProduct.name}
               </h2>
-              <div style={{ fontSize: '13px', color: '#00D2FF', marginBottom: '18px' }}>
-                {selectedProduct.truck} — {selectedProduct.model}
+              <div style={{ fontSize: '12px', color: '#00D2FF', marginBottom: '16px' }}>
+                Application: {selectedProduct.truck} — {selectedProduct.model}
               </div>
 
               <div
                 style={{
                   display: 'grid',
                   gridTemplateColumns: '1fr 1fr',
-                  gap: '12px',
+                  gap: '10px',
                   background: 'rgba(0,0,0,0.4)',
-                  padding: '16px',
+                  padding: '14px',
                   border: '1px dashed rgba(0, 210, 255, 0.25)',
-                  marginBottom: '20px',
+                  marginBottom: '18px',
+                  fontSize: '11px',
                 }}
               >
                 <div>
-                  <div style={{ fontSize: '10px', color: '#688CA5' }}>DRY WEIGHT</div>
-                  <div style={{ fontSize: '15px', fontWeight: 700, color: '#FFF' }}>{selectedProduct.weightLbs} lbs</div>
+                  <div style={{ color: '#688CA5' }}>TUBING PROFILE</div>
+                  <div style={{ fontSize: '13px', fontWeight: 700, color: '#FFF' }}>{selectedProduct.tubeDiameter}</div>
                 </div>
                 <div>
-                  <div style={{ fontSize: '10px', color: '#688CA5' }}>AERODYNAMIC DELTA</div>
-                  <div style={{ fontSize: '15px', fontWeight: 700, color: '#22C55E' }}>{selectedProduct.aeroDragDelta}</div>
+                  <div style={{ color: '#688CA5' }}>IMPACT RATING</div>
+                  <div style={{ fontSize: '13px', fontWeight: 700, color: '#22C55E' }}>{selectedProduct.impactRating}</div>
                 </div>
                 <div>
-                  <div style={{ fontSize: '10px', color: '#688CA5' }}>FINISH COAT</div>
-                  <div style={{ fontSize: '12px', fontWeight: 600, color: '#8FBAD9' }}>{selectedProduct.finish}</div>
-                </div>
-                <div>
-                  <div style={{ fontSize: '10px', color: '#688CA5' }}>INVENTORY STATUS</div>
-                  <div style={{ fontSize: '12px', fontWeight: 700, color: selectedProduct.inStock ? '#22C55E' : '#EF4444' }}>
-                    {selectedProduct.inStock ? `${selectedProduct.stockCount} UNITS READY` : 'BACKORDER 5 DAYS'}
+                  <div style={{ color: '#688CA5' }}>RADAR STATUS</div>
+                  <div style={{ fontSize: '12px', fontWeight: 600, color: selectedProduct.radarCompliant ? '#22C55E' : '#EAB308' }}>
+                    {selectedProduct.radarCompliant ? '100% Pass-Through' : 'Standard Bumper'}
                   </div>
                 </div>
-              </div>
-
-              {/* Technical Drawing Callout */}
-              <div style={{ fontSize: '11px', color: '#8FBAD9', lineHeight: 1.6, marginBottom: '24px' }}>
-                <p style={{ margin: '0 0 8px 0' }}>
-                  <strong>Mounting:</strong> Bolts straight into chassis frame rails. No cutting, drilling, or OEM bumper removal required.
-                </p>
-                <p style={{ margin: 0 }}>
-                  <strong>Sensor Clearance:</strong> Conforms to ISO 15623 radar aperture tolerances.
-                </p>
+                <div>
+                  <div style={{ color: '#688CA5' }}>DEPOT STOCK</div>
+                  <div style={{ fontSize: '12px', fontWeight: 700, color: '#00D2FF' }}>
+                    {selectedProduct.stockCount} UNITS CRATED
+                  </div>
+                </div>
               </div>
 
               {/* Price & Procure CTA */}
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid rgba(0, 210, 255, 0.2)', paddingTop: '16px' }}>
                 <div>
                   <div style={{ fontSize: '10px', color: '#688CA5' }}>UNIT NET PRICE</div>
-                  <div style={{ fontSize: '26px', fontWeight: 800, color: '#00D2FF' }}>
+                  <div style={{ fontSize: '24px', fontWeight: 800, color: '#00D2FF' }}>
                     ${selectedProduct.price.toLocaleString()}
                   </div>
+                  <div style={{ fontSize: '10px', color: '#8FBAD9' }}>or ${selectedProduct.affirmMonthly}/mo Affirm</div>
                 </div>
 
                 <button
+                  onClick={handleAdd}
                   style={{
-                    background: '#00D2FF',
+                    background: cartAdded ? '#22C55E' : '#00D2FF',
                     color: '#04101E',
                     padding: '12px 20px',
                     border: 'none',
@@ -276,9 +282,13 @@ export default function BlueprintShop() {
                     fontSize: '12px',
                     letterSpacing: '0.06em',
                     cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
                   }}
                 >
-                  ADD TO PO ORDER
+                  <ShoppingCart size={14} />
+                  <span>{cartAdded ? 'ADDED' : 'BUY GUARD'}</span>
                 </button>
               </div>
             </div>
